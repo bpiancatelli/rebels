@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html  lang="fr">
+<head>
+	<meta charset="utf-8" />
+	<title>Detection de Mobile en JS</title>
+	<link rel="stylesheet" type="text/css" href="mes-styles.css"/>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0;">
+    <script type="text/javascript">
+        function init () {
+                if(/iPhone|iPad|iPod|Android|mobile|opera mini|blackberry|palm os|palm|hiptop|avantgo|plucker|xiino|blazer|elaine|iris|3g_t|windows ce|tablet|opera mobi|windows ce; smartphone;|windows ce;|iemobile/i.test(navigator.userAgent)){
+                alert ("Vous êtes sur mobile");
+             }
+             else {
+                alert("Vous n'êtes pas sur mobile");
+             }
+        };
+    </script>
+
+</head>
+
+
+<body onload="init()">
+	<h1>Détection de Mobile en JS</h1>	
+</body>
+</html>
