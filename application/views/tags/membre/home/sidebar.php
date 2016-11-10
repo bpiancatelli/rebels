@@ -65,6 +65,7 @@
                                         <li><a href="<?php echo base_url()?>membre/show/match"><i class="fa fa-trophy"></i>Match</a></li>
                                         <li><a href="<?php echo base_url()?>membre/show/calendrier"><i class="fa fa-calendar"></i>Match Amicaux</a></li>
                                         <li><a href="<?php echo base_url()?>membre/show/curlcalendrier"><i class="fa fa-calendar"></i>Calendrier</a></li>
+                                        <li><a href="<?php echo base_url()?>admin/curlmembre"><i class="fa fa-users"></i>Ingest players</a></li>
                                         <?php if($this->session->userdata('prenom') == 'Guillaume' && $this->session->userdata('nom') == 'Gailliet'){ ?>
                                         <li><a href="<?php echo base_url()?>membre/show/cotisation"><i class="fa fa-lock"></i>Cotisation</a></li>
                                         <?php } ?>                                        
@@ -74,9 +75,8 @@
                                 <li><a><i class="fa fa-pie-chart"></i>Reporting<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <?php if($this->session->userdata('prenom') == 'Benoit' && $this->session->userdata('nom') == 'Piancatelli'){ ?>
-                                            <li><a href="<?php echo base_url()?>membre/show/log"><i class="fa fa-database"></i>Form Log</a></li>
-                                            <!--<li><a href="<?php echo base_url()?>reporting/mailing"><i class="fa fa-envelope-o"></i>Email</a>
-                                            </li>-->
+                                            <!-- <li><a href="<?php echo base_url()?>membre/show/log"><i class="fa fa-database"></i>Form Log</a></li> -->
+                                            <!--<li><a href="<?php echo base_url()?>reporting/mailing"><i class="fa fa-envelope-o"></i>Email</a></li>-->                                            
                                         <?php } ?>
                                             <li><a href="<?php echo base_url()?>membre/show/drivertool"><i class="fa fa-taxi"></i>Driver Tool</a></li>
                                     </ul>

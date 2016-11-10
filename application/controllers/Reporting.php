@@ -16,18 +16,11 @@ class Reporting extends CI_Controller{
 		$this->load->model('dao/match_membre_adapter');
 		$this->load->model('dao/membre_adapter');
 		$this->load->model('dao/session_manager');
+		$this->load->model('dao/sidebar_adapter');
+
+		$sa = new Sidebar_adapter();
+		$sa->generateSideBar();
 		
-	}
-
-	public function generateSideBar(){
-		$da = new Division_adapter();
-		$data['divisions'] = $da->getAllDivisionsWherePlayed();
-		$newdata = array(
-					'divisions' =>$data['divisions'],                   	
-               );
-		$this->session->set_userdata($newdata);
-
-		$this->load->view('tags/membre/home/sidebar',$data);
 	}
 
 
@@ -40,8 +33,7 @@ class Reporting extends CI_Controller{
 
 
 
-		$this->load->view('tags/header');
-		$this->generateSideBar();
+		$this->load->view('tags/header');		
 		$this->load->view('tags/admin/email/mailing');
 		$this->load->view('tags/footer');
 		
@@ -64,8 +56,7 @@ class Reporting extends CI_Controller{
 						
 		$data['subject'] = "Rapport de match";
 
-		$this->load->view('tags/header');
-		$this->generateSideBar();
+		$this->load->view('tags/header');		
 		$this->load->view('tags/admin/email/preview',$data);
 		$this->load->view('tags/footer');
 		

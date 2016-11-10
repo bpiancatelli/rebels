@@ -49,11 +49,14 @@ class Division_adapter extends CI_Model{
 		$this->load->helper('date');
 		$year = date('Y',now());
 
-		$this->db->select('id_division');
+		/*$this->db->select('id_division');
 		$this->db->from('match');
 		$this->db->like('date_match',$year);
-		$this->db->group_by('id_division');
-		$query = $this->db->get();
+		$this->db->group_by('id_division');*/
+
+		$query = $this->db->query("select id_division from match where extract(year from now()::date)::text ilike '".$year."'");
+
+		//$query = $this->db->get();
 		
 		$liste = null;
 		if($query->num_rows() > 0 ){

@@ -94,3 +94,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 $frbbsBaseUrl = 'http://www.frbbs.be/';
 defined('FRBBS_CLASSEMENT')	OR define('FRBBS_CLASSEMENT', $frbbsBaseUrl.'classement.php/?saison=');
 defined('FRBBS_CALENDRIER') OR define('FRBBS_CALENDRIER',$frbbsBaseUrl.'calendar.php?');
+defined('FRBBS_LICENCE')	OR define('FRBBS_LICENCE', $frbbsBaseUrl.'licence.php?');

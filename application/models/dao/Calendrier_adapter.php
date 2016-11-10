@@ -19,8 +19,4 @@ class Calendrier_adapter extends CI_Model{
 		return $date[2]."/".$date[1]."/".$date[0];
 	}
 
-
-
-
-
 }

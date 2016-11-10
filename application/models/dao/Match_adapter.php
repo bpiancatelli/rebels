@@ -14,9 +14,7 @@ class Match_adapter extends CI_Model{
 		$this->load->helper('date');
 		$year = date('Y',now());
 
-		$this->db->select('*');
-		$this->db->from('match');
-		$this->db->like('date_match',$year);
+		return $year;
 	}
 
 	public function getAllYears(){
@@ -59,9 +57,9 @@ class Match_adapter extends CI_Model{
 
 
 	public function getAllMatchsOfThisYear(){
-		$this->getThisYear();
-		
-		$query = $this->db->get();
+		$year = $this->getThisYear();
+
+		$query = $this->db->query("select id_division from match where extract(year from now()::date)::text ilike '".$year."'");
 
 		$liste = null;
 		if($query->num_rows() > 0){
@@ -120,13 +118,16 @@ class Match_adapter extends CI_Model{
 		$lastWeek = date('Y-m-d',strtotime('-1 week'));		
 		$nextWeek = date('Y-m-d',strtotime('+1 week'));	
 
-		$this->getThisYear();
-		$this->db->where('scoreHome',0);
-		$this->db->where('scoreAway',0);
-		$this->db->where('date_match >',$lastWeek);
-		$this->db->where('date_match <',$nextWeek);
+		$year = $this->getThisYear();
 
-		$query = $this->db->get();
+		$query = $this->db->query("select * from match where extract(year from now()::date)::text ilike '".$year."' and score_home = 0 and score_away = 0");
+		//$this->db->where('scoreHome',0);
+		//$this->db->where('scoreAway',0);
+		//$this->db->where('date_match >',$lastWeek);
+		//$this->db->where('date_match <',$nextWeek);
+
+		//$query = $this->db->get();
+		
 		$liste = null;
 
 		if($query->num_rows() > 0){

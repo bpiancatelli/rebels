@@ -82,12 +82,12 @@ $query_builder = TRUE;
 
 
 	$db['default'] = array(
-		'dsn'	=> 'mysql:localhost;dbname=baseball',
+		'dsn'	=> 'pgsql:host=localhost;dbname=baseball',
 		'hostname' => 'localhost',
-		'username' => 'root',
-		'password' => 'mysql',
+		'username' => 'postgres',
+		'password' => 'postgres',
 		'database' => 'baseball',
-		'dbdriver' => 'mysqli',
+		'dbdriver' => 'pdo',
 		'dbprefix' => '',
 		'pconnect' => FALSE,
 		'db_debug' => (ENVIRONMENT !== 'production'),
@@ -103,12 +103,3 @@ $query_builder = TRUE;
 		'save_queries' => TRUE
 	);
 	
-
-/**********************
-***********************
-**********PROD*********
-***********************
-***********************/  
-/*
-
-*/

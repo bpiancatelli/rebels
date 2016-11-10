@@ -15,21 +15,11 @@ class Drivertool extends CI_Controller{
 		$this->load->model('dao/match_adapter');
 		$this->load->model('dao/membre_adapter');
 		$this->load->model('dao/session_manager');
+		$this->load->model('dao/sidebar_adapter');
 		
-		
+		$sa = new Sidebar_adapter();		
+		$sa->generateSideBar();
 	}
-
-	public function generateSideBar(){
-		$da = new Division_adapter();
-		$data['divisions'] = $da->getAllDivisionsWherePlayed();
-		$newdata = array(
-					'divisions' =>$data['divisions'],                   	
-               );
-		$this->session->set_userdata($newdata);
-
-		$this->load->view('tags/membre/home/sidebar',$data);
-	}
-
 
 
 	public function show(){
@@ -38,7 +28,8 @@ class Drivertool extends CI_Controller{
 		$data['matchs'] = $ma->getAllMatchsOfThisYear();
 
 		$this->load->view('tags/header');
-		$this->generateSideBar();		
+
+
 		$this->load->view('tags/membre/drivertool/drivertool',$data);
 		$this->load->view('tags/footer');
 		
@@ -64,11 +55,11 @@ class Drivertool extends CI_Controller{
 		$isTookHisCar = $dt->isTookHisCar($idMatch,$idMembre);
 
 		//LOG
-		$fl = new Form_log_adapter();
-		$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-		$params = array('id_match'=>$idMatch,'id_membre'=>$idMembre,'car'=>$isTookHisCar);
-		$parametres = json_encode($params);	
-		$idMembre = $this->session->userdata('idMembre');			
+		// $fl = new Form_log_adapter();
+		// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+		// $params = array('id_match'=>$idMatch,'id_membre'=>$idMembre,'car'=>$isTookHisCar);
+		// $parametres = json_encode($params);	
+		// $idMembre = $this->session->userdata('idMembre');			
 		//$fl->insertLog(3,5,$parametres,$membre,$idMembre);
 
 		$this->show();

@@ -6,7 +6,11 @@ class Exercice extends CI_Controller{
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('dao/division_adapter');		
+		$this->load->model('dao/division_adapter');	
+		$this->load->model('dao/sidebar_adapter');
+		
+		$sa = new Sidebar_adapter();		
+		$sa->generateSideBar();	
 	}
 
 	public function index(){		
@@ -14,24 +18,13 @@ class Exercice extends CI_Controller{
 		$data['difficultyLevel'] = array('0' => 'Facile','1' => 'Moyen','2' => 'Difficile');
 
 		$this->load->view('tags/header');
-		$this->generateSideBar();
 		$this->load->view('tags/membre/exercice/exercice', $data);
 		$this->load->view('tags/footer');
 
 
 	}
 	
-	public function generateSideBar(){
-		
-		$da = new Division_adapter();
-		$data['divisions'] = $da->getAllDivisionsWherePlayed();
-		$newdata = array(
-					'divisions' =>$data['divisions'],                   	
-               );
-		$this->session->set_userdata($newdata);
 
-		$this->load->view('tags/membre/home/sidebar',$data);
-	}
 
 	public function retrieveLevel(){
 
@@ -48,8 +41,7 @@ class Exercice extends CI_Controller{
 		$data['questions'] = $this->generateQuestions();
 
 
-		$this->load->view('tags/header');
-		$this->generateSideBar();
+		$this->load->view('tags/header');		
 		$this->load->view('tags/membre/exercice/question', $data);
 		$this->load->view('tags/footer');
 

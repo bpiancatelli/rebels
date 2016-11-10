@@ -270,4 +270,14 @@ class Membre_model extends CI_Model{
 
         return $this;
     }
+
+    /**
+     * Gets the value of licence.
+     *
+     * @return mixed
+     */
+    public function getLicence()
+    {
+        return $this->licence;
+    }
 }

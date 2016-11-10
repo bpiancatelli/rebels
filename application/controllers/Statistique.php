@@ -13,21 +13,13 @@ class Statistique extends CI_Controller{
 		$this->load->model('dao/match_membre_adapter');
 		$this->load->model('dao/membre_adapter');
 		$this->load->model('dao/session_manager');
+		$this->load->model('dao/sidebar_adapter');
+		
+		$sa = new Sidebar_adapter();		
+		$sa->generateSideBar();
 
 	}
 
-	public function generateSideBar(){		
-
-		$da = new Division_adapter();
-		$data['divisions'] = $da->getAllDivisionsWherePlayed();
-		$newdata = array(
-					'divisions' =>$data['divisions'],                   	
-               );
-		$this->session->set_userdata($newdata);
-
-		$this->load->view('tags/membre/home/sidebar',$data);
-
-	}
 
 	/**
 	*
@@ -92,8 +84,7 @@ class Statistique extends CI_Controller{
 
 		}
 		
-		$this->load->view('tags/header');
-		$this->generateSideBar();		
+		$this->load->view('tags/header');		
 		$this->load->view('tags/admin/statistiques/updatematch',$data);
 		$this->load->view('tags/footer');
 
@@ -104,11 +95,11 @@ class Statistique extends CI_Controller{
 		$scoreAway = $this->input->post('scoreAway');
 
 		//LOG
-		$fl = new Form_log_adapter();
-		$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-		$params = array('id_match'=>$idMatch,'scoreHome'=>$scoreHome,'scoreAway'=>$scoreAway);
-		$parametres = json_encode($params);		
-		$idMembre = $this->session->userdata('idMembre');
+		// $fl = new Form_log_adapter();
+		// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+		// $params = array('id_match'=>$idMatch,'scoreHome'=>$scoreHome,'scoreAway'=>$scoreAway);
+		// $parametres = json_encode($params);		
+		// $idMembre = $this->session->userdata('idMembre');
 		//$fl->insertLog(5,18,$parametres,$membre,$idMembre);
 
 		$ma = new Match_adapter();
@@ -135,28 +126,28 @@ class Statistique extends CI_Controller{
 		$cs= $this->input->post('cs');
 
 		//LOG
-		$fl = new Form_log_adapter();
-		$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-		$params = array(
-			'id_match'=>$idMatch,
-			'id_membre'=>$idMembre,
-			'1B'=>$simpleHit,
-			'2B'=>$doubleHit,
-			'3B'=>$tripleHit,
-			'HR'=>$hr,
-			'ROE'=>$roe,
-			'HBP'=>$hbp,
-			'GOFO'=>$gofo,
-			'SAC'=>$sac,
-			'BB'=>$bb,
-			'K'=>$k,
-			'RBI'=>$rbi,
-			'RUNS'=>$runs,
-			'SB'=>$sb,
-			'CS'=>$cs
-			);
-		$parametres = json_encode($params);
-		$idMembreLog = $this->session->userdata('idMembre');			
+		// $fl = new Form_log_adapter();
+		// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+		// $params = array(
+		// 	'id_match'=>$idMatch,
+		// 	'id_membre'=>$idMembre,
+		// 	'1B'=>$simpleHit,
+		// 	'2B'=>$doubleHit,
+		// 	'3B'=>$tripleHit,
+		// 	'HR'=>$hr,
+		// 	'ROE'=>$roe,
+		// 	'HBP'=>$hbp,
+		// 	'GOFO'=>$gofo,
+		// 	'SAC'=>$sac,
+		// 	'BB'=>$bb,
+		// 	'K'=>$k,
+		// 	'RBI'=>$rbi,
+		// 	'RUNS'=>$runs,
+		// 	'SB'=>$sb,
+		// 	'CS'=>$cs
+		// 	);
+		// $parametres = json_encode($params);
+		// $idMembreLog = $this->session->userdata('idMembre');			
 		//$fl->insertLog(5,19,$parametres,$membre,$idMembreLog);
 
 		$mma = new Match_membre_adapter();
@@ -188,8 +179,7 @@ class Statistique extends CI_Controller{
 				'cs'=>'cs'
 				);
 
-		$this->load->view('tags/header');
-		$this->generateSideBar();		
+		$this->load->view('tags/header');		
 		$this->load->view('tags/admin/statistiques/updatejoueur',$data);
 		$this->load->view('tags/footer');
 	}
@@ -213,28 +203,28 @@ class Statistique extends CI_Controller{
 
 
 		//LOG
-		$fl = new Form_log_adapter();
-		$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-		$params = array(
-			'id_match'=>$idMatch,
-			'id_membre'=>$idMembre,
-			'1B'=>$simpleHit,
-			'2B'=>$doubleHit,
-			'3B'=>$tripleHit,
-			'HR'=>$hr,
-			'ROE'=>$roe,
-			'HBP'=>$hbp,
-			'GOFO'=>$gofo,
-			'SAC'=>$sac,
-			'BB'=>$bb,
-			'K'=>$k,
-			'RBI'=>$rbi,
-			'RUNS'=>$runs,
-			'SB'=>$sb,
-			'CS'=>$cs
-			);
-		$parametres = json_encode($params);		
-		$idMembre = $this->session->userdata('idMembre');		
+		// $fl = new Form_log_adapter();
+		// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+		// $params = array(
+		// 	'id_match'=>$idMatch,
+		// 	'id_membre'=>$idMembre,
+		// 	'1B'=>$simpleHit,
+		// 	'2B'=>$doubleHit,
+		// 	'3B'=>$tripleHit,
+		// 	'HR'=>$hr,
+		// 	'ROE'=>$roe,
+		// 	'HBP'=>$hbp,
+		// 	'GOFO'=>$gofo,
+		// 	'SAC'=>$sac,
+		// 	'BB'=>$bb,
+		// 	'K'=>$k,
+		// 	'RBI'=>$rbi,
+		// 	'RUNS'=>$runs,
+		// 	'SB'=>$sb,
+		// 	'CS'=>$cs
+		// 	);
+		// $parametres = json_encode($params);		
+		// $idMembre = $this->session->userdata('idMembre');		
 		//$fl->insertLog(5,19,$parametres,$membre,$idMembre);
 
 		$mma = new Match_membre_adapter();
@@ -267,19 +257,18 @@ class Statistique extends CI_Controller{
 
 		//'id_form_famille','id_form_type','parametres','membre'
 		//LOG
-		$fl = new Form_log_adapter();
-		$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');
-		if ($idDivision == '') {
-			$idDivision = 'null';
-		}
-		$params = array('division'=>$idDivision);
-		$parametres = json_encode($params);		
-		$idMembre = $this->session->userdata('idMembre');			
+		// $fl = new Form_log_adapter();
+		// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');
+		// if ($idDivision == '') {
+		// 	$idDivision = 'null';
+		// }
+		// $params = array('division'=>$idDivision);
+		// $parametres = json_encode($params);		
+		// $idMembre = $this->session->userdata('idMembre');			
 		//$fl->insertLog(2,2,$parametres,$membre,$idMembre);
 
 		
-		$this->load->view('tags/header');
-		$this->generateSideBar();		
+		$this->load->view('tags/header');		
 		$this->load->view('tags/membre/statistique/search',$data);
 		$this->load->view('tags/footer');
 	}
@@ -311,18 +300,17 @@ class Statistique extends CI_Controller{
 
 
 		//LOG
-		$fl = new Form_log_adapter();
-		$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-		$params = array('id_membre'=>$joueur,'id_adversaire'=>$adversaire,'date_match'=>$annee,'division'=>$division);
-		$parametres = json_encode($params);	
-		$idMembre = $this->session->userdata('idMembre');			
+		// $fl = new Form_log_adapter();
+		// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+		// $params = array('id_membre'=>$joueur,'id_adversaire'=>$adversaire,'date_match'=>$annee,'division'=>$division);
+		// $parametres = json_encode($params);	
+		// $idMembre = $this->session->userdata('idMembre');			
 		//$fl->insertLog(2,4,$parametres,$membre,$idMembre);
 
 		$data['resultats'] = null;
 		$data['resultats'] = $mma->getSearchEngine($joueur,$adversaire,$annee,$division);
 
-		$this->load->view('tags/header');
-		$this->generateSideBar();
+		$this->load->view('tags/header');		
 		$this->load->view('tags/membre/statistique/engine',$data);		
 		$this->load->view('tags/footer');
 

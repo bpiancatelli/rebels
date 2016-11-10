@@ -1,8 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Membre extends CI_Controller{
-
+class Membre extends CI_Controller{	
 
 	public function __construct(){
 		parent::__construct();
@@ -16,10 +15,10 @@ class Membre extends CI_Controller{
 		$this->load->model('dao/match_adapter');
 		$this->load->model('dao/match_membre_adapter');
 		$this->load->model('dao/membre_adapter');
-		$this->load->model('dao/session_manager');
+		$this->load->model('dao/sidebar_adapter');
+		$this->load->model('dao/session_manager');		
 		$this->load->model('metier/curl_model');
 		$this->load->helper('simple_html_dom');
-		
 		
 	}
 
@@ -64,7 +63,7 @@ class Membre extends CI_Controller{
         $cm = new Curl_model();
         $year = date('Y',now());
         $page = utf8_encode($cm->grab_page(FRBBS_CLASSEMENT.$year));
-        
+        $sa = new Sidebar_adapter();
        	
 /*
 |--------------------------------------------------------------------------
@@ -72,7 +71,7 @@ class Membre extends CI_Controller{
 |--------------------------------------------------------------------------
 |
 */
-        $data['adversaires'] = $m->getMatchsOfNextWeek();
+        //$data['adversaires'] = $m->getMatchsOfNextWeek();
 
 /*
 |--------------------------------------------------------------------------
@@ -115,28 +114,7 @@ class Membre extends CI_Controller{
 				}
 			}
 		}
-		$data['championships'] = $club;
-
-		// $table = $html->find('table', 8);
-		// $rowData = array();
-		// foreach($table->find('tr') as $row) {
-		//     // initialize array to store the cell data from each row
-		//     $flight = array();
-		//     foreach($row->find('td') as $cell) {
-		//         // push the cell's text to the array
-		//         $flight[] = $cell->plaintext." ";
-		//     }
-		//     $rowData[] = $flight;
-		// }		
-		// // display table
-		// echo '<table>';
-		// foreach ($rowData as $row => $tr) {
-		//     echo '<tr>'; 
-		//     foreach ($tr as $td)
-		//         echo '<td>' . $td .'</td>';
-		//     echo '</tr>';
-		// }
-		// echo '</table>';       
+		$data['championships'] = $club;  
 
 /*
 |--------------------------------------------------------------------------
@@ -146,9 +124,9 @@ class Membre extends CI_Controller{
 */
 
 		
-		$data['top3']['sb'] = $mma->getTop3('sb');
-		$data['top3']['runs'] = $mma->getTop3('runs');
-		$data['top3']['rbi'] = $mma->getTop3('rbi');
+		//$data['top3']['sb'] = $mma->getTop3('sb');
+		//$data['top3']['runs'] = $mma->getTop3('runs');
+		//$data['top3']['rbi'] = $mma->getTop3('rbi');
 		//$data['top3']['Strikouts'] = $mma->getTop3('k');
 
 /*
@@ -158,11 +136,11 @@ class Membre extends CI_Controller{
 |
 */		
 
-		$data['chartsMatchList'] = $m->getAllMatchsOfThisYearByMembre($this->session->userdata('idMembre'));
-	    $data['chartsAvg'] = $mma->getMatchsByIdJoueurOfThisYear($this->session->userdata('idMembre'));
-		$data['chartsSumOut'] = $mma->getSumOuts($this->session->userdata('idMembre'));
-		$data['matchsPlayed'] = $mma->getMatchsByIdJoueurOfThisYear($this->session->userdata('idMembre'));
-		$data['stats'] = array(
+		//$data['chartsMatchList'] = $m->getAllMatchsOfThisYearByMembre($this->session->userdata('idMembre'));
+	    //$data['chartsAvg'] = $mma->getMatchsByIdJoueurOfThisYear($this->session->userdata('idMembre'));
+		//$data['chartsSumOut'] = $mma->getSumOuts($this->session->userdata('idMembre'));
+		//$data['matchsPlayed'] = $mma->getMatchsByIdJoueurOfThisYear($this->session->userdata('idMembre'));
+		/*$data['stats'] = array(
 					'Division' =>'Division',
 					'Date match'=>'Date',
 					'Adversaire' =>'Adversaire',
@@ -180,29 +158,19 @@ class Membre extends CI_Controller{
 					'Stolen Base %'=>'SB%'
 			);
 
-
-		$this->load->view('tags/header');
-		$this->generateSideBar();
+		*/
+		$this->load->view('tags/header');		
+		$sa->generateSideBar();
 		$this->load->view('tags/membre/home/homepage',$data);
 		$this->load->view('tags/footer');
 	}
 
 	public function annonce(){
 		$this->load->view('tags/header');
-		$this->generateSideBar();
+		$sa = new Sidebar_adapter();
+		$sa->generateSideBar();
 		$this->load->view('tags/membre/home/annonce');
 		$this->load->view('tags/footer');
-	}
-
-	public function generateSideBar(){
-		$da = new Division_adapter();
-		$data['divisions'] = $da->getAllDivisionsWherePlayed();
-		$newdata = array(
-					'divisions' =>$data['divisions'],                   	
-               );
-		$this->session->set_userdata($newdata);
-
-		$this->load->view('tags/membre/home/sidebar',$data);
 	}
 
 	public function login(){
@@ -225,9 +193,8 @@ class Membre extends CI_Controller{
 			$row = $query->row_array();
 			//$sm = new Session_manager();
 			$m = new Membre_model($row['id_membre'], $row['nom'], $row['prenom'], $row['email'], $row['licence'], $row['login'], 
-				$row['password'], $row['date_inscription'], $row['derniere_connexion'], $row['actif'], $row['administrateur']);
+				$row['password'], $row['date_inscription'], $row['derniere_connexion'], $row['is_actif'], $row['is_administrateur']);
 
-			$fl = new Form_log_adapter();
 
 			$newdata = array(
 					'nom' =>$row['nom'],
@@ -238,8 +205,8 @@ class Membre extends CI_Controller{
                    	'password'=>$row['password'],
                    	'dateInscription'=>$row['date_inscription'],
                    	'derniereConnexion'=>$row['derniere_connexion'],
-                   	'actif'=>$row['actif'],
-                   	'administrateur' => $row['administrateur'],
+                   	'actif'=>$row['is_actif'],
+                   	'administrateur' => $row['is_administrateur'],
                    	'idMembre' =>$row['id_membre'],
                    	'logged_in' => TRUE
                );
@@ -249,10 +216,11 @@ class Membre extends CI_Controller{
 
 			//'id_form_famille','id_form_type','parametres','membre'
 			//LOG
-			$membre = $row['prenom']." ".$row['nom'];
-			$params = array('login'=>$row['login'],'password'=>$row['password']);
-			$parametres = json_encode($params);	
-			$idMembre = $this->session->userdata('idMembre');	
+			//$fl = new Form_log_adapter();
+			// $membre = $row['prenom']." ".$row['nom'];
+			// $params = array('login'=>$row['login'],'password'=>$row['password']);
+			// $parametres = json_encode($params);	
+			// $idMembre = $this->session->userdata('idMembre');	
 			//$fl->insertLog(1,1,$parametres,$membre,$idMembre);
 
 			$this->index();
@@ -263,12 +231,12 @@ class Membre extends CI_Controller{
 	}
 
 	public function logout(){
-		//LOG
-		$fl = new Form_log_adapter();
-		$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-		$params = array('deconnexion'=>$membre);
-		$parametres = json_encode($params);		
-		$idMembre = $this->session->userdata('idMembre');		
+		// //LOG
+		// $fl = new Form_log_adapter();
+		// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+		// $params = array('deconnexion'=>$membre);
+		// $parametres = json_encode($params);		
+		// $idMembre = $this->session->userdata('idMembre');		
 		//$fl->insertLog(6,23,$parametres,$membre,$idMembre);
 
 		$this->session->sess_destroy();
@@ -278,8 +246,9 @@ class Membre extends CI_Controller{
 	public function update($data){			
 
 		$this->load->view('tags/header');
-		$this->generateSideBar();	
-		$this->load->view('tags/membre/update/datas',$data);
+		$sa = new Sidebar_adapter();
+		$sa->generateSideBar();
+		$this->load->view('tags/membre/update/data',$data);
 		$this->load->view('tags/footer');
 
 	}
@@ -317,11 +286,11 @@ class Membre extends CI_Controller{
 
 			
 			//LOG
-			$fl = new Form_log_adapter();
-			$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-			$params = array('password'=>$new);
-			$parametres = json_encode($params);		
-			$idMembre = $this->session->userdata('idMembre');		
+			//$fl = new Form_log_adapter();
+			//$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+			//$params = array('password'=>$new);
+			//$parametres = json_encode($params);		
+			//$idMembre = $this->session->userdata('idMembre');		
 			//$fl->insertLog(6,21,$parametres,$membre,$idMembre);
 			
 			$data['succes']['mdp'] = "Modification effectuées avec succès";		
@@ -368,11 +337,11 @@ class Membre extends CI_Controller{
 			);
 
 			//LOG
-			$fl = new Form_log_adapter();
-			$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-			$params = array('new_email'=>$email,'old_email'=>$oldMail);
-			$parametres = json_encode($params);				
-			$idMembre = $this->session->userdata('idMembre');
+			// $fl = new Form_log_adapter();
+			// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+			// $params = array('new_email'=>$email,'old_email'=>$oldMail);
+			// $parametres = json_encode($params);				
+			// $idMembre = $this->session->userdata('idMembre');
 			//$fl->insertLog(6,22,$parametres,$membre,$idMembre);
 
 			$data['succes']['email'] = "Modification effectuées avec succès";
@@ -445,7 +414,8 @@ class Membre extends CI_Controller{
 		}
 
 		$this->load->view('tags/header');
-		$this->generateSideBar();	
+		$sa = new Sidebar_adapter();
+		$sa->generateSideBar();
 		$this->load->view('tags/admin/manage/'.$what,$data);
 		$this->load->view('tags/footer');
 	}
@@ -465,11 +435,11 @@ class Membre extends CI_Controller{
 				$ma->addCalendar($division,$adversaire,$date,$reference,$localisation);
 
 				//LOG
-				$fl = new Form_log_adapter();
-				$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-				$params = array('id_division'=>$division,'id_adversaire'=>$adversaire,'date'=>$date,'reference'=>$reference,'localisation'=>$localisation);
-				$parametres = json_encode($params);		
-				$idMembre = $this->session->userdata('idMembre');		
+				// $fl = new Form_log_adapter();
+				// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+				// $params = array('id_division'=>$division,'id_adversaire'=>$adversaire,'date'=>$date,'reference'=>$reference,'localisation'=>$localisation);
+				// $parametres = json_encode($params);		
+				// $idMembre = $this->session->userdata('idMembre');		
 				//$fl->insertLog(5,11,$parametres,$membre,$idMembre);
 
 				$data['succes']['calendrier'] = "Match ajouté avec succès";		
@@ -490,11 +460,11 @@ class Membre extends CI_Controller{
 
 
 				//LOG
-				$fl = new Form_log_adapter();
-				$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
-				$params = array('nom'=>$nom,'prenom'=>$prenom,'email'=>$email);
-				$parametres = json_encode($params);	
-				$idMembre = $this->session->userdata('idMembre');			
+				// $fl = new Form_log_adapter();
+				// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
+				// $params = array('nom'=>$nom,'prenom'=>$prenom,'email'=>$email);
+				// $parametres = json_encode($params);	
+				// $idMembre = $this->session->userdata('idMembre');			
 				//$fl->insertLog(5,8,$parametres,$membre,$idMembre);
 
 				$data['succes']['membre'] = "Membre ajouté avec succès";		

@@ -432,17 +432,15 @@ class Match_membre_adapter extends CI_Model{
 		$this->db->join ('match','match.id_match = match_membre.id_match');	
 		if($lastWeek != null){
 			$today = date('Y-m-d',now());
-
-			$this->db->where('match.date_match >=',$lastWeek);
-			$this->db->where('match.date_match <=',$today);
-			
+		 	$this->db->where('match.date_match >=',$lastWeek);
+		 	$this->db->where('match.date_match <=',$today);
 		}else{
-			$this->db->like('match.date_match',$year);	
+		 	$this->db->like('match.date_match',$year);	
 		}
 		
 		$this->db->group_by('id_membre');
 		$this->db->order_by('2','desc');
-		//$this->db->limit(3);
+		$this->db->limit(3);
 		$query = $this->db->get();		
 
 		if($query->num_rows() > 0){			
@@ -489,7 +487,7 @@ class Match_membre_adapter extends CI_Model{
 		$this->db->from('match_membre');
 		$this->db->join('match','match.id_match = match_membre.id_match');
 		$this->db->where('match_membre.id_membre', $idMembre);
-		$this->db->like('match.date_match',$year);
+		$this->db->where('match.date_match',$year);
 
 		$query = $this->db->get();
 
