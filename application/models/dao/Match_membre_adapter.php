@@ -310,8 +310,12 @@ class Match_membre_adapter extends CI_Model{
 			case 'cs':			
 				$this->db->select('id_membre, sum(cs) as s');
 				break;
-
-
+			case 'obp':
+				$this->db->select('id_membre, (sum(hit)+sum(hbp)+sum(bb)) / (sum(ab)+sum(bb)+sum(hbp)) as s');
+				break;
+			case 'slug':
+				$this->db->select('id_membre, (sum(hit) + (2*sum(doublehit)) + (3*sum(triplehit)) + (4*sum(hr))) /sum(ab) as s');
+				break;
 		}		
 
 		$this->db->from('match_membre');
@@ -376,7 +380,7 @@ class Match_membre_adapter extends CI_Model{
 		$this->db->from('match_membre');
 		$this->db->join('match','match.id_match = match_membre.id_match');
 		$this->db->where('match_membre.id_membre', $idMembre);
-		$this->db->where('match.date_match',$year);
+		$this->db->like('match.date_match',$year);
 
 		$query = $this->db->get();
 

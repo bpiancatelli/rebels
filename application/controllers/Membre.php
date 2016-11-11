@@ -126,8 +126,10 @@ class Membre extends CI_Controller{
 		
 		$data['top3']['sb'] = $mma->getTop3('sb');
 		$data['top3']['runs'] = $mma->getTop3('runs');
-		$data['top3']['rbi'] = $mma->getTop3('rbi');
-		$data['top3']['Strikouts'] = $mma->getTop3('k');
+		$data['top3']['rbi'] = $mma->getTop3('rbi');		
+		$data['top3']['avg'] = $mma->getTop3('avg');
+		$data['top3']['obp'] = $mma->getTop3('obp');
+		$data['top3']['slug'] = $mma->getTop3('slug');
 
 /*
 |--------------------------------------------------------------------------
