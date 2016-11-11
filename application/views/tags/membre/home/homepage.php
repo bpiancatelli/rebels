@@ -39,7 +39,7 @@
                     $c = new Calendrier_adapter();
                     $d = new Division_adapter();
                     $equipe = $e->getAdversaireById($adversaire->getIdAdversaire());
-                    $date = $c->sqlToDate($adversaire->getDateMatch());
+                    $date = $c->sqlToDate($c->suppressMidnight($adversaire->getDateMatch()));
                     $division = $d->getDivisionByIdDivision($adversaire->getIdDivision());
 
                 ?>
@@ -245,7 +245,7 @@
                                     ?>
                                         <tr>
                                             <td><?php echo $da->getDivisionByIdDivision($matchObject->getIdDivision())->getNom()?></td>
-                                            <td><?php echo $ca->sqlToDate($matchObject->getDateMatch())?></td>
+                                            <td><?php echo $ca->sqlToDate($ca->suppressMidnight($matchObject->getDateMatch()))?></td>
                                             <td><?php echo $equipe->getNomCourt() ?></td>
                                             <td><?php echo $match->getPa() ?></td>
                                             <td><?php echo $match->getAb() ?></td>
@@ -379,7 +379,7 @@
             <?php $ca = new Calendrier_adapter(); ?>
             var lineChartData = {
                 //labels: ["January", "February", "March", "April", "May", "June", "July"],
-                labels:[<?php foreach ($matchs as $value) { echo '"'.$ca->sqlToDate($value).'",';} ?>],
+                labels:[<?php foreach ($matchs as $value) { echo '"'.$ca->sqlToDate($ca->suppressMidnight($value)).'",';} ?>],
                 datasets: [
                     {
                         label: "AVG par match",

@@ -46,9 +46,9 @@ class Match_adapter extends CI_Model{
 				$row['date_match'],
 				$row['id_adversaire'],
 				$row['id_division'],
-				$row['domicile'],
-				$row['scoreHome'],
-				$row['scoreAway']
+				$row['is_domicile'],
+				$row['score_home'],
+				$row['score_away']
 				);
 		}
 
@@ -58,8 +58,13 @@ class Match_adapter extends CI_Model{
 
 	public function getAllMatchsOfThisYear(){
 		$year = $this->getThisYear();
+		
+		$this->db->select('*');
+		$this->db->from('match');
+		$this->db->like('date_match',$year);		
+		$query = $this->db->get();
 
-		$query = $this->db->query("select id_division from match where extract(year from now()::date)::text ilike '".$year."'");
+		//$query = $this->db->query("select id_division from match where extract(year from now()::date)::text ilike '".$year."'");
 
 		$liste = null;
 		if($query->num_rows() > 0){
@@ -70,9 +75,9 @@ class Match_adapter extends CI_Model{
 					$row->date_match,
 					$row->id_adversaire,
 					$row->id_division,
-					$row->domicile,
-					$row->scoreHome,
-					$row->scoreAway
+					$row->is_domicile,
+					$row->score_home,
+					$row->score_away
 					);
 			}
 		}
@@ -102,9 +107,9 @@ class Match_adapter extends CI_Model{
 					$row->date_match,
 					$row->id_adversaire,
 					$row->id_division,
-					$row->domicile,
-					$row->scoreHome,
-					$row->scoreAway
+					$row->is_domicile,
+					$row->score_home,
+					$row->score_away
 					);
 			}
 		}
@@ -120,13 +125,14 @@ class Match_adapter extends CI_Model{
 
 		$year = $this->getThisYear();
 
-		$query = $this->db->query("select * from match where extract(year from now()::date)::text ilike '".$year."' and score_home = 0 and score_away = 0");
-		//$this->db->where('scoreHome',0);
-		//$this->db->where('scoreAway',0);
-		//$this->db->where('date_match >',$lastWeek);
-		//$this->db->where('date_match <',$nextWeek);
-
-		//$query = $this->db->get();
+		//$query = $this->db->query("select * from match where extract(year from now()::date)::text ilike '".$year."' and score_home = 0 and score_away = 0");
+		$this->db->select('*')
+			->from('match')
+			->where('score_home',0)
+			->where('score_away',0)
+			->where('date_match >',$lastWeek)
+			->where('date_match <',$nextWeek);
+		$query = $this->db->get();
 		
 		$liste = null;
 
@@ -138,9 +144,9 @@ class Match_adapter extends CI_Model{
 					$row->date_match,
 					$row->id_adversaire,
 					$row->id_division,
-					$row->domicile,
-					$row->scoreHome,
-					$row->scoreAway
+					$row->is_domicile,
+					$row->score_home,
+					$row->score_away
 					);
 			}
 		}
@@ -169,9 +175,9 @@ class Match_adapter extends CI_Model{
 					$row->date_match,
 					$row->id_adversaire,
 					$row->id_division,
-					$row->domicile,
-					$row->scoreHome,
-					$row->scoreAway
+					$row->is_domicile,
+					$row->score_home,
+					$row->score_away
 					);
 			}
 		}
@@ -186,7 +192,7 @@ class Match_adapter extends CI_Model{
 													'id_adversaire'=>$adversaire,
 													'date_match'=>$date,
 													'reference'=>$reference,
-													'domicile'=>$domicile)
+													'is_domicile'=>$domicile)
 			);
 		} catch (Exception $e) {
 			echo $e->getMessage();
@@ -195,8 +201,8 @@ class Match_adapter extends CI_Model{
 
 	public function updateScore($idMatch,$scoreHome,$scoreAway){
 		$data = array(
-               'scoreHome' => $scoreHome,
-               'scoreAway' => $scoreAway
+               'score_home' => $scoreHome,
+               'score_away' => $scoreAway
             );
 
 		$this->db->where('id_match', $idMatch);

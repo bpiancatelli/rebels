@@ -14,17 +14,26 @@ class Equipe_adapter extends CI_Model{
 		$liste = null;
 		if ($query->num_rows() > 0) {			
 			$liste = null;
+
 			foreach ($query->result() as $row) {
-				$liste[$row->id_equipe] = new Equipe_model($row->id_equipe, $row->nom_long, $row->nom_court, $row->logo, $row->is_active, $row->adresse, $row->adresse_numero, $row->code_postal, $row->ville);
-			}	
+			// 	//$liste[$row->id_equipe] = new Equipe_model($row->id_equipe, $row->nom_long, $row->nom_court, $row->logo, $row->is_active, $row->adresse, $row->adresse_numero, $row->code_postal, $row->ville);
+			// 	echo $query->result()[0]->id_equipe;
+			 	$em = new Equipe_model();
+			 	$liste[$row->id_equipe] = $em->hydrate($row);
+
+			}
 		}		
+		
 		return $liste;
 	}
 
 	public function getAdversaireById($idAdversaire){
 		$query = $this->db->get_where('equipe',array('id_equipe'=>$idAdversaire));
 		$row = $query->row_array();
-		return new Equipe_model($row['id_equipe'], $row['nom_long'], $row['nom_court'], $row['logo'], $row['is_active'], $row['adresse'], $row['adresse_numero'], $row['code_postal'], $row['ville']);
+		$em = new Equipe_model();
+
+		return $em->hydrate($query->result()[0]);
+		//return new Equipe_model($row['id_equipe'], $row['nom_long'], $row['nom_court'], $row['logo'], $row['is_active'], $row['adresse'], $row['adresse_numero'], $row['code_postal'], $row['ville']);
 
 	}
 

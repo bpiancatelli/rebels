@@ -32,7 +32,9 @@ class Cotisation_adapter extends CI_Model{
 
 		if($query->num_rows() == 1){		
 			$row = $query->row_array();
-			return new Cotisation_model($row['id_cotisation'],$row['id_membre'], $row['cotisation_paye'],$row['cotisation_total']);	
+			$cm = new Cotisation_model();
+			return $cm->hydrate($query->result());
+			//return new Cotisation_model($row['id_cotisation'],$row['id_membre'], $row['cotisation_paye'],$row['cotisation_total']);	
 		}else{
 			return null;
 		}
@@ -66,8 +68,10 @@ class Cotisation_adapter extends CI_Model{
 		$query = $this->db->get();
 
 		if($query->num_rows() > 0){
+			$cm = new Cotisation_model();
 			foreach ($query->result() as $row) {
-				$liste[$row->id_cotisation] = new Cotisation_model($row->id_cotisation,$row->id_membre, $row->cotisation_paye,$row->cotisation_total);
+				//$liste[$row->id_cotisation] = new Cotisation_model($row->id_cotisation,$row->id_membre, $row->cotisation_paye,$row->cotisation_total);				
+				$liste[$row->id_cotisation] = $cm->hydrate($row);
 			}
 		}
 			

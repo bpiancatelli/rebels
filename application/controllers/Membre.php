@@ -71,7 +71,7 @@ class Membre extends CI_Controller{
 |--------------------------------------------------------------------------
 |
 */
-        //$data['adversaires'] = $m->getMatchsOfNextWeek();
+        $data['adversaires'] = $m->getMatchsOfNextWeek();
 
 /*
 |--------------------------------------------------------------------------
@@ -124,10 +124,10 @@ class Membre extends CI_Controller{
 */
 
 		
-		//$data['top3']['sb'] = $mma->getTop3('sb');
-		//$data['top3']['runs'] = $mma->getTop3('runs');
-		//$data['top3']['rbi'] = $mma->getTop3('rbi');
-		//$data['top3']['Strikouts'] = $mma->getTop3('k');
+		$data['top3']['sb'] = $mma->getTop3('sb');
+		$data['top3']['runs'] = $mma->getTop3('runs');
+		$data['top3']['rbi'] = $mma->getTop3('rbi');
+		$data['top3']['Strikouts'] = $mma->getTop3('k');
 
 /*
 |--------------------------------------------------------------------------
@@ -136,11 +136,11 @@ class Membre extends CI_Controller{
 |
 */		
 
-		//$data['chartsMatchList'] = $m->getAllMatchsOfThisYearByMembre($this->session->userdata('idMembre'));
-	    //$data['chartsAvg'] = $mma->getMatchsByIdJoueurOfThisYear($this->session->userdata('idMembre'));
-		//$data['chartsSumOut'] = $mma->getSumOuts($this->session->userdata('idMembre'));
-		//$data['matchsPlayed'] = $mma->getMatchsByIdJoueurOfThisYear($this->session->userdata('idMembre'));
-		/*$data['stats'] = array(
+		$data['chartsMatchList'] = $m->getAllMatchsOfThisYearByMembre($this->session->userdata('idMembre'));
+	    $data['chartsAvg'] = $mma->getMatchsByIdJoueurOfThisYear($this->session->userdata('idMembre'));
+		$data['chartsSumOut'] = $mma->getSumOuts($this->session->userdata('idMembre'));
+		$data['matchsPlayed'] = $mma->getMatchsByIdJoueurOfThisYear($this->session->userdata('idMembre'));
+		$data['stats'] = array(
 					'Division' =>'Division',
 					'Date match'=>'Date',
 					'Adversaire' =>'Adversaire',
@@ -158,7 +158,7 @@ class Membre extends CI_Controller{
 					'Stolen Base %'=>'SB%'
 			);
 
-		*/
+		
 		$this->load->view('tags/header');		
 		$sa->generateSideBar();
 		$this->load->view('tags/membre/home/homepage',$data);
@@ -430,8 +430,7 @@ class Membre extends CI_Controller{
 				$localisation =  $this->input->post('localisation');
 				$ma = new Match_adapter();
 				$ca = new Calendrier_adapter();
-
-				$date = $ca->dateToSql($date);
+				//$date = $ca->dateToSql($date);
 				$ma->addCalendar($division,$adversaire,$date,$reference,$localisation);
 
 				//LOG

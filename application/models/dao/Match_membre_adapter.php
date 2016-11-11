@@ -28,9 +28,9 @@ class Match_membre_adapter extends CI_Model{
 													'pa'=>$pa,
 													'ab'=>$ab,
 													'hit'=>$hit,
-													'simpleHit'=>$simpleHit,
-													'doubleHit'=>$doubleHit,
-													'tripleHit'=>$tripleHit,
+													'simplehit'=>$simpleHit,
+													'doublehit'=>$doubleHit,
+													'triplehit'=>$tripleHit,
 													'hr'=>$hr,
 													'roe'=>$roe,
 													'hbp'=>$hbp,
@@ -61,9 +61,9 @@ class Match_membre_adapter extends CI_Model{
 			'pa'=>$pa,
 			'ab'=>$ab,
 			'hit'=>$hit,
-			'simpleHit'=>$simpleHit,
-			'doubleHit'=>$doubleHit,
-			'tripleHit'=>$tripleHit,
+			'simplehit'=>$simpleHit,
+			'doublehit'=>$doubleHit,
+			'triplehit'=>$tripleHit,
 			'hr'=>$hr,
 			'roe'=>$roe,
 			'hbp'=>$hbp,
@@ -89,27 +89,8 @@ class Match_membre_adapter extends CI_Model{
 		if ($query->num_rows() > 0) {			
 			$liste = null;
 			foreach ($query->result() as $row) {
-				$liste[$row->id_match_membre] = new Match_membre_model($row->id_match_membre, 
-					$row->id_membre, 
-					$row->id_match, 
-					$row->pa, 
-					$row->ab, 
-					$row->hit, 
-					$row->simpleHit, 
-					$row->doubleHit, 
-					$row->tripleHit, 
-					$row->hr, 
-					$row->roe, 
-					$row->hbp, 
-					$row->gofo, 
-					$row->sac, 
-					$row->bb, 
-					$row->k, 
-					$row->rbi, 
-					$row->runs, 
-					$row->sb, 
-					$row->cs
-					);
+				$mmm = new Match_membre_model();
+				$liste[$row->id_match_membre] = $mmm->hydrate($row);
 				
 			}	
 		}		
@@ -133,27 +114,8 @@ class Match_membre_adapter extends CI_Model{
 		if($query->num_rows() > 0){
 
 			foreach ($query->result() as $row) {
-				$liste[$row->id_match_membre] = new Match_membre_model($row->id_match_membre, 
-					$row->id_membre, 
-					$row->id_match, 
-					$row->pa, 
-					$row->ab, 
-					$row->hit, 
-					$row->simpleHit, 
-					$row->doubleHit, 
-					$row->tripleHit, 
-					$row->hr, 
-					$row->roe, 
-					$row->hbp, 
-					$row->gofo, 
-					$row->sac, 
-					$row->bb, 
-					$row->k, 
-					$row->rbi, 
-					$row->runs, 
-					$row->sb, 
-					$row->cs
-					);				
+				$mmm = new Match_membre_model();
+				$liste[$row->id_match_membre] = $mmm->hydrate($row);			
 			}
 
 		}
@@ -169,27 +131,8 @@ class Match_membre_adapter extends CI_Model{
 		if($query->num_rows() > 0){
 
 			foreach ($query->result() as $row) {
-				$liste[$row->id_match_membre] = new Match_membre_model($row->id_match_membre, 
-					$row->id_membre, 
-					$row->id_match, 
-					$row->pa, 
-					$row->ab, 
-					$row->hit, 
-					$row->simpleHit, 
-					$row->doubleHit, 
-					$row->tripleHit, 
-					$row->hr, 
-					$row->roe, 
-					$row->hbp, 
-					$row->gofo, 
-					$row->sac, 
-					$row->bb, 
-					$row->k, 
-					$row->rbi, 
-					$row->runs, 
-					$row->sb, 
-					$row->cs
-					);				
+				$mmm = new Match_membre_model();
+				$liste[$row->id_match_membre] = $mmm->hydrate($row);			
 			}
 
 		}
@@ -203,27 +146,8 @@ class Match_membre_adapter extends CI_Model{
 		$query = $this->db->get_where('match_membre',array('id_match'=>$idMatch,'id_membre'=>$idMembre));
 
 		if($query->num_rows() == 1){			
-			$row = $query->row_array();
-			$membre = new Match_membre_model($row['id_match_membre'],
-					$row['id_membre'],
-					$row['id_match'],
-					$row['pa'],
-					$row['ab'],
-					$row['hit'],
-					$row['simpleHit'],
-					$row['doubleHit'],
-					$row['tripleHit'],
-					$row['hr'],
-					$row['roe'],
-					$row['hbp'],
-					$row['gofo'],
-					$row['sac'],
-					$row['bb'],
-					$row['k'],
-					$row['rbi'],
-					$row['runs'],
-					$row['sb'],
-					$row['cs']);
+			$mmm = new Match_membre_model();
+			$membre = $mmm->hydrate($query->result()[0]);
 		}
 
 		return $membre;
@@ -262,27 +186,8 @@ class Match_membre_adapter extends CI_Model{
 		if ($query->num_rows() > 0) {			
 			$liste = null;
 			foreach ($query->result() as $row) {
-				$liste[$row->id_match_membre] = new Match_membre_model($row->id_match_membre, 
-					$row->id_membre, 
-					$row->id_match, 
-					$row->pa, 
-					$row->ab, 
-					$row->hit, 
-					$row->simpleHit, 
-					$row->doubleHit, 
-					$row->tripleHit, 
-					$row->hr, 
-					$row->roe, 
-					$row->hbp, 
-					$row->gofo, 
-					$row->sac, 
-					$row->bb, 
-					$row->k, 
-					$row->rbi, 
-					$row->runs, 
-					$row->sb, 
-					$row->cs
-					);
+				$mmm = new Match_membre_model();
+				$liste[$row->id_match_membre] = $mmm->hydrate($row);
 				
 			}	
 		}		
@@ -318,27 +223,8 @@ class Match_membre_adapter extends CI_Model{
 		if ($query->num_rows() > 0) {			
 			$liste = null;
 			foreach ($query->result() as $row) {
-				$liste[$row->id_match_membre] = new Match_membre_model($row->id_match_membre, 
-					$row->id_membre, 
-					$row->id_match, 
-					$row->pa, 
-					$row->ab, 
-					$row->hit, 
-					$row->simpleHit, 
-					$row->doubleHit, 
-					$row->tripleHit, 
-					$row->hr, 
-					$row->roe, 
-					$row->hbp, 
-					$row->gofo, 
-					$row->sac, 
-					$row->bb, 
-					$row->k, 
-					$row->rbi, 
-					$row->runs, 
-					$row->sb, 
-					$row->cs
-					);
+				$mmm = new Match_membre_model();
+				$liste[$row->id_match_membre] = $mmm->hydrate($row);			
 				
 			}	
 		}		
@@ -465,7 +351,10 @@ class Match_membre_adapter extends CI_Model{
 				$query = $this->db->get();
 				if($query->num_rows() > 0){
 					foreach ($query->result() as $row) {
-						$liste[$what][$key][$row->id_membre] = new Membre_model($row->id_membre,$row->nom,$row->prenom,$row->email,$row->login,$row->password,$row->date_inscription,$row->derniere_connexion,$row->actif,$row->administrateur);													
+						
+						$mm = new Membre_model();
+						$liste[$what][$key][$row->id_membre] = $mm->hydrate($row);
+						//$liste[$what][$key][$row->id_membre] = new Membre_model($row->id_membre,$row->nom,$row->prenom,$row->email,$row->login,$row->password,$row->date_inscription,$row->derniere_connexion,$row->is_actif,$row->is_administrateur);													
 					}
 				}
 						

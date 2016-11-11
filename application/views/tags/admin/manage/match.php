@@ -58,7 +58,7 @@
                                         <td><?php echo $match->getReference(); ?></td>
                                         <td><?php echo $match->getIdDivision(); ?></td>
                                         <td><?php echo $equipe->getNomLong(); ?></td>
-                                        <td><?php echo $ca->sqlToDate($match->getDateMatch()); ?></td>
+                                        <td><?php echo $ca->sqlToDate($ca->suppressMidnight($match->getDateMatch())); ?></td>
                                         <td><?php echo $match->getIsDomicile()? 'Home' : 'Away'; ?></td>
                                         <td><?php echo $match->getScoreHome()." - ".$match->getScoreAway(); ?></td>
                                         <td><a class='btn btn-success btn-xs' href="<?php echo base_url()?>statistique/update/<?php echo $match->getIdMatch();?>">update</a></td>

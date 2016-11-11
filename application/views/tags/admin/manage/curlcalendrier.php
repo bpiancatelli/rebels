@@ -157,7 +157,7 @@
                                             <tr>
                                                 <td><?php echo $division->getNom(); ?></td>
                                                 <td><?php echo $equipe->getNomLong(); ?></td>
-                                                <td><?php echo $match->getDateMatch(); ?></td>
+                                                <td><?php echo $ca->sqlToDate($ca->suppressMidnight($match->getDateMatch())); ?></td>
                                                 <td><?php echo $match->getIsDomicile()? 'Home' : 'Away'; ?></td>
                                                 <td><a href="<?php echo base_url()?>statistique/update/<?php echo $match->getIdMatch()?>"><i class="fa fa-pencil"></i></a></td>
                                             </tr>

@@ -19,4 +19,9 @@ class Calendrier_adapter extends CI_Model{
 		return $date[2]."/".$date[1]."/".$date[0];
 	}
 
+	public function suppressMidnight($date){
+		$date = explode(' ', $date);
+		return $date[0];
+	}
+
 }

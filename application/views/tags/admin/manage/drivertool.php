@@ -66,7 +66,7 @@
                                     <tr>
                                         <td><?php echo $membre->getNom()." ".$membre->getPrenom(); ?></td>                                    
                                         <td><?php echo $equipe->getNomLong(); ?></td>
-                                        <td><?php echo $c->sqlToDate($match->getDateMatch()); ?></td>
+                                        <td><?php echo $c->sqlToDate($c->suppressMidnight($match->getDateMatch())); ?></td>
                                         <td><?php echo $log->getTravelCost(); ?> €</td>
                                         <td><?php echo $log->getTookHisCar()  ? 
                                                         "<div class='alert-success alert-xs'>Oui</div>" :

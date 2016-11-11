@@ -86,8 +86,7 @@
                             Mis à jour du match contre <?php echo $equipe->getNomLong() ?> du 
                             <?php 
                                 $ca = new Calendrier_adapter();
-                                $date =  $ca->sqlToDate($match->getDateMatch());
-                                echo $date;
+                                echo $ca->sqlToDate($ca->suppressMidnight($match->getDateMatch()));
                             ?> référence (<?php echo $match->getReference() ?>)
                         </h2>
                         <ul class="nav navbar-right panel_toolbox">

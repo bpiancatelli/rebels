@@ -25,7 +25,8 @@ class Membre_adapter extends CI_Model{
 		$liste = null;
 		if($query->num_rows() == 1){
 			$row = $query->row_array();
-			$liste = new Membre_model($row['id_membre'],$row['nom'],$row['prenom'],$row['email'], $row['licence'], $row['login'],$row['password'],$row['date_inscription'],$row['derniere_connexion'],$row['is_actif'],$row['is_administrateur']);
+			$mm = new Membre_model();
+			$liste = $mm->hydrate($query->result()[0]);
 		}
 
 		return $liste;
@@ -53,13 +54,15 @@ class Membre_adapter extends CI_Model{
 	}
 
 	public function getAllActiveMembre(){
-		$query = $this->db->get_where('membre',array('is_actif'=>true));
+		//$query = $this->db->get_where('membre',array('is_actif'=>true));
+		$query = $this->db->get_where('membre',array('is_actif'=>1));
 
 		$liste = null;
 		if($query->num_rows() > 0){
 			
 			foreach($query->result() as $row){
-				$liste[$row->id_membre] = new Membre_model($row->id_membre,$row->nom,$row->prenom,$row->email,$row->licence,$row->login,$row->password,$row->date_inscription,$row->derniere_connexion,$row->is_actif,$row->is_administrateur);
+				$mm = new Membre_model();
+				$liste[$row->id_membre] = $mm->hydrate($row);
 			}
 		}
 
@@ -74,9 +77,11 @@ class Membre_adapter extends CI_Model{
 		if($query->num_rows() > 0){
 			$liste = null;
 			foreach($query->result() as $row){
-				$liste[$row->id_membre] = new Membre_model($row->id_membre,$row->nom,$row->prenom,$row->email,$row->licence,$row->login,$row->password,$row->date_inscription,$row->derniere_connexion,$row->is_actif,$row->is_administrateur);
+				$mm = new Membre_model();
+				$liste[$row->id_membre] = $mm->hydrate($row);
 			}
 		}
+
 
 		return $liste;
 	}
@@ -114,7 +119,8 @@ class Membre_adapter extends CI_Model{
 
 	public function activeMembre($idMembre){
 		$data = array(
-				'is_actif' => true
+				//'is_actif' =>true
+				'is_actif' => 1
 			);
 		$this->db->where('id_membre',$idMembre);
 		$this->db->update('membre',$data);
@@ -122,7 +128,8 @@ class Membre_adapter extends CI_Model{
 
 	public function deactiveMembre($idMembre){
 		$data = array(
-				'is_actif' => false
+				//'is_actif' =>false
+				'is_actif' => 0
 			);
 		$this->db->where('id_membre',$idMembre);
 		$this->db->update('membre',$data);
@@ -130,7 +137,8 @@ class Membre_adapter extends CI_Model{
 
 	public function activeAdmin($idMembre){
 		$data = array(
-				'is_administrateur' => true
+				//'is_administrateur' =>true
+				'is_administrateur' => 1
 			);
 		$this->db->where('id_membre',$idMembre);
 		$this->db->update('membre',$data);
@@ -138,7 +146,8 @@ class Membre_adapter extends CI_Model{
 
 	public function deactiveAdmin($idMembre){
 		$data = array(
-				'is_administrateur' => false
+				//'is_administrateur' =>false
+				'is_administrateur' => 0
 			);
 		$this->db->where('id_membre',$idMembre);
 		$this->db->update('membre',$data);
@@ -163,8 +172,8 @@ class Membre_adapter extends CI_Model{
 													'password'=>$password,
 													'date_inscription'=>$today,
 													'derniere_connexion'=>$today,
-													'is_actif'=>true,
-													'is_administrateur'=>false
+													'is_actif'=>1,
+													'is_administrateur'=>0
 													)
 			);
 		} catch (Exception $e) {
@@ -179,14 +188,15 @@ class Membre_adapter extends CI_Model{
 			->where(array('nom'=>$nom,'prenom'=>$prenom))
 			->get();
 		
-		$idMembre = $query->result()[0]->id_membre;		
+		if ($query->num_rows() > 0) {
+			$idMembre = $query->result()[0]->id_membre;
+			$this->updateLicence($idMembre, $licence);		
+		}		
 
 		// num_rows = 0 : member does not exists on db -> have to create it
 		if ($query->num_rows() == 0) {
 			$this->insertMembre($nom, $prenom, '');
-		}
-
-		$this->updateLicence($idMembre, $licence);		
+		}		
 	}
 
 	public function updateLicence($id_membre, $licence){

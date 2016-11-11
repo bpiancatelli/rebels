@@ -25,6 +25,18 @@ class Match_model extends CI_Model{
 
 	}
 
+    public function hydrate($obj){
+        $this->setIdMatch($obj->id_match);
+        $this->setIdDivision($obj->id_division);
+        $this->setIdAdversaire($obj->id_adversaire);
+        $this->setDateMatch($obj->date_match);
+        $this->setReference($obj->reference);
+        $this->setIsDomicile($obj->is_domicile);
+        $this->setScoreHome($obj->score_home);
+        $this->setScoreAway($obj->score_away);
+    }
+
+
 
     /**
      * Gets the value of idMatch.

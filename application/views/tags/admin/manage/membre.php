@@ -147,7 +147,7 @@
                                         <td><?php echo $membre->getNom()?></td>
                                         <td><?php echo $membre->getPrenom(); ?></td>
                                         <td><?php echo $membre->getEmail(); ?></td>
-                                        <td><?php echo $ca->sqlToDate($membre->getDerniereConnexion()); ?></td>
+                                        <td><?php echo $ca->sqlToDate($ca->suppressMidnight($membre->getDerniereConnexion())); ?></td>
                                         <td>                                            
                                             <?php 
                                                 

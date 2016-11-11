@@ -24,7 +24,11 @@ class Division_adapter extends CI_Model{
 		$liste = null;
 		if($query->num_rows() == 1){
 			$row = $query->row_array();
-			$liste = new Division_model($row['id_division'],$row['nom']);
+			//$liste = new Division_model($row['id_division'],$row['nom']);			
+			$dm = new Division_model();
+			//TODO find another way not display [0]
+			$liste = $dm->hydrate($query->result()[0]);
+
 		}
 
 		return $liste;
@@ -38,10 +42,11 @@ class Division_adapter extends CI_Model{
 		if ($query->num_rows() > 0) {			
 			$liste = null;
 			foreach ($query->result() as $row) {
-				$liste[$row->id_division] = new Division_model($row->id_division, $row->nom);
-				
+				//$liste[$row->id_division] = new Division_model($row->id_division, $row->nom);
+				$dm = new Division_model();
+				$liste[$row->id_division] = $dm->hydrate($row);
 			}	
-		}		
+		}
 		return $liste;
 	}
 
@@ -49,14 +54,13 @@ class Division_adapter extends CI_Model{
 		$this->load->helper('date');
 		$year = date('Y',now());
 
-		/*$this->db->select('id_division');
+		$this->db->select('id_division');
 		$this->db->from('match');
 		$this->db->like('date_match',$year);
-		$this->db->group_by('id_division');*/
+		$this->db->group_by('id_division');
+		$query = $this->db->get();
 
-		$query = $this->db->query("select id_division from match where extract(year from now()::date)::text ilike '".$year."'");
-
-		//$query = $this->db->get();
+		//$query = $this->db->query("select id_division from match where extract(year from now()::date)::text ilike '".$year."'");	
 		
 		$liste = null;
 		if($query->num_rows() > 0 ){
@@ -75,7 +79,9 @@ class Division_adapter extends CI_Model{
 			if ($query->num_rows() > 0) {			
 				$liste = null;
 				foreach ($query->result() as $row) {
-					$liste[$row->id_division] = new Division_model($row->id_division, $row->nom);
+					//$liste[$row->id_division] = new Division_model($row->id_division, $row->nom);
+					$dm = new Division_model();
+					$liste[$row->id_division] = $dm->hydrate($row);
 					
 				}	
 			}		
@@ -107,7 +113,9 @@ class Division_adapter extends CI_Model{
 			if ($query->num_rows() > 0) {			
 				$liste = null;
 				foreach ($query->result() as $row) {
-					$liste[$row->id_division] = new Division_model($row->id_division, $row->nom);
+					//$liste[$row->id_division] = new Division_model($row->id_division, $row->nom);
+					$dm = new Division_model();
+					$liste[$row->id_division] = $dm->hydrate($row);
 					
 				}	
 			}		

@@ -28,6 +28,21 @@ class Equipe_model extends CI_Model{
 
 	}
 
+    public function hydrate($obj){
+           
+        $this->setIdEquipe($obj->id_equipe);
+        $this->setNomLong($obj->nom_long);
+        $this->setNomCourt($obj->nom_court);
+        $this->setLogo($obj->logo);
+        $this->setAdresse($obj->adresse);
+        $this->setAdresseNumero($obj->adresse_numero);
+        $this->setCodePostal($obj->code_postal);
+        $this->setVille($obj->ville);
+
+        return $this;
+
+    }
+
 
     /**
      * Gets the value of idEquipe.
@@ -160,6 +175,12 @@ class Equipe_model extends CI_Model{
         return $this->adresse;
     }
 
+    public function setAdresse($adresse){
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
     /**
      * Gets the value of adresseNumero.
      *
@@ -168,6 +189,12 @@ class Equipe_model extends CI_Model{
     public function getAdresseNumero()
     {
         return $this->adresseNumero;
+    }
+
+    public function setAdresseNumero($adresseNumero){
+        $this->adresseNumero = $adresseNumero;
+
+        return $this;
     }
 
     /**
@@ -180,6 +207,12 @@ class Equipe_model extends CI_Model{
         return $this->codePostal;
     }
 
+    public function setCodePostal($codePostal){
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
     /**
      * Gets the value of ville.
      *
@@ -189,4 +222,11 @@ class Equipe_model extends CI_Model{
     {
         return $this->ville;
     }
+
+    public function setVille($ville){
+        $this->ville = $ville;
+        return $this;
+    }
+
+
 }

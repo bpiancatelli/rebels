@@ -17,6 +17,16 @@ class Drivertool_model extends CI_Model{
         $this->travelCost = $travelCost;
 	}
 
+    public function hydrate($obj){
+    
+        $this->setIdDriverTool($obj->id_driver_tool);
+        $this->setIdMatch($obj->id_match);
+        $this->setIdMembre($obj->id_membre);
+        $this->setTookHisCar($obj->tookhiscar);
+        $this->setTravelCost($obj->travelcost);
+
+        return $this;
+    }
 
     /**
      * Gets the value of idDriverTool.
@@ -123,4 +133,20 @@ class Drivertool_model extends CI_Model{
     {
         return $this->travelCost;
     }
+
+
+    /**
+     * Sets the value of travelCost.
+     *
+     * @param mixed $travelCost
+     *
+     * @return self
+     */
+    public function setTravelCost($travelCost)
+    {
+        $this->travelCost = $travelCost;
+
+        return $this;
+    }
+
 }

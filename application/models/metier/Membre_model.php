@@ -29,6 +29,23 @@ class Membre_model extends CI_Model{
         $this->isAdministrateur = $isAdministrateur;
 	}
 
+    public function hydrate($obj){
+
+        $this->setIdMembre($obj->id_membre);
+        $this->setNom($obj->nom);
+        $this->setPrenom($obj->prenom);
+        $this->setEmail($obj->email);
+        $this->setLicence($obj->licence);
+        $this->setLogin($obj->login);
+        $this->setPassword($obj->password);
+        $this->setDateInscription($obj->date_inscription);
+        $this->setDerniereConnexion($obj->derniere_connexion);
+        $this->setIsActif($obj->is_actif);
+        $this->setIsAdministrateur($obj->is_administrateur);
+
+        return $this;
+    }
+
     /**
      * Gets the value of id_membre.
      *
@@ -279,5 +296,11 @@ class Membre_model extends CI_Model{
     public function getLicence()
     {
         return $this->licence;
+    }
+
+    public function setLicence($licence){
+        $this->licence = $licence;
+
+        return $this;
     }
 }

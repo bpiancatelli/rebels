@@ -19,8 +19,9 @@ class Drivertool_adapter extends CI_Model{
 				$this->db->insert('drivertool',array(
 						'id_match'=>$idMatch,
 						'id_membre'=>$idMembre,
-						'isTookHisCar'=>true,
-						'travelCost' => $cost
+						//'tookhiscar'=>true,
+						'tookhiscar'=>1,
+						'travelcost' => $cost
 					));
 
 			} catch (Exception $e) {
@@ -29,18 +30,18 @@ class Drivertool_adapter extends CI_Model{
 		}else{
 			try {
 				//update
-				$this->db->select('isTookHisCar');
+				$this->db->select('tookhiscar');
 				$this->db->from('drivertool');
 				$this->db->where('id_membre', $idMembre);
 				$this->db->where('id_match', $idMatch);
 				$query = $this->db->get();
 				$row = $query->row_array();
 
-				$isTookHisCar = ($row['isTookHisCar'] ? "0" : "1");						
+				$isTookHisCar = ($row['tookhiscar'] ? "0" : "1");						
 
 				$data = array(
-    	           'isTookHisCar' => $isTookHisCar,
-    	           'travelCost' => $cost
+    	           'tookhiscar' => $isTookHisCar,
+    	           'travelcost' => $cost
 	            );
 
 				$this->db->where('id_membre', $idMembre);
@@ -57,9 +58,9 @@ class Drivertool_adapter extends CI_Model{
 
 	public function isTookHisCar($idMatch, $idMembre){
 		$returnArray = array(
-				'isTookHisCar' => null,
-				'travelCost' =>null
-			);
+				'tookhiscar' => null,
+				'travelcost' =>null);
+		
 		$query = $this->db->get_where('drivertool', array('id_membre'=>$idMembre,'id_match'=>$idMatch));
 		
 		$row = null;
@@ -67,8 +68,8 @@ class Drivertool_adapter extends CI_Model{
 			$row = $query->row_array();
 		}	
 
-		$returnArray['isTookHisCar'] = $row['isTookHisCar'];
-		$returnArray['travelCost'] = $row['travelCost'];
+		$returnArray['isTookHisCar'] = $row['tookhiscar'];
+		$returnArray['travelCost'] = $row['travelcost'];
 
 		return $returnArray;
 	}
@@ -77,9 +78,11 @@ class Drivertool_adapter extends CI_Model{
 		$query = $this->db->get('drivertool');
 
 		$liste = null;
-		if($query->num_rows() > 0){			
+		if($query->num_rows() > 0){
 			foreach ($query->result() as $row) {
-				$liste[$row->id_drivertool] = new Drivertool_model($row->id_drivertool, $row->id_match, $row->id_membre, $row->isTookHisCar, $row->travelCost);
+				$dm = new Drivertool_model();
+				//$liste[$row->id_drivertool] = new Drivertool_model($row->id_drivertool, $row->id_match, $row->id_membre, $row->isTookHisCar, $row->travelCost);
+				$liste[$row->id_driver_tool] = $dm->hydrate($row);
 			}
 		}
 

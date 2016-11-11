@@ -51,7 +51,7 @@
                             			$c = new Calendrier_adapter();
                             			$dt = new Drivertool_adapter();
                                         $d = new Division_adapter();
-                            			$date = $c->sqlToDate($match->getDateMatch());
+                            			$date = $c->sqlToDate($c->suppressMidnight($match->getDateMatch()));
                             			$equipe = $e->getAdversaireById($match->getIdAdversaire());
                             			$data = $dt->isTookHisCar($match->getIdMatch(), $this->session->userdata('idMembre'));
                                         $division = $d->getDivisionByIdDivision($match->getIdDivision());

@@ -40,7 +40,7 @@ class Drivertool extends CI_Controller{
 		//$this->form_validation->set_rules('travelCost','Coût','required');
 
 		$dt = new Drivertool_adapter();		
-		$cost = $this->input->post('cout');
+		$cost = $this->input->post('cout') ? $this->input->post('cout') : 0.0;
 		$idMatch = $this->input->post('id_match');
 		$idMembre = $this->input->post('id_membre');
 

@@ -23,6 +23,18 @@ class Form_log_model extends CI_Model{
 
 	}
 
+    public function hydrate($obj){
+        $this->setIdFormLog($obj->id_form_log);
+        $this->setIdFormFamille($obj->id_form_famille);
+        $this->setIdFormType($obj->id_form_type);
+        $this->setParametres($obj->parametres);
+        $this->setMembre($obj->membre);
+        $this->setDateRecord($obj->date_record);
+        $this->setIdMembre($obj->id_membre);
+
+        return $this;
+    }
+
     /**
      * Gets the value of idFormLog.
      *

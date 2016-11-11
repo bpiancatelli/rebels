@@ -66,9 +66,9 @@
                                         <li><a href="<?php echo base_url()?>membre/show/calendrier"><i class="fa fa-calendar"></i>Match Amicaux</a></li>
                                         <li><a href="<?php echo base_url()?>membre/show/curlcalendrier"><i class="fa fa-calendar"></i>Calendrier</a></li>
                                         <li><a href="<?php echo base_url()?>admin/curlmembre"><i class="fa fa-users"></i>Ingest players</a></li>
-                                        <?php if($this->session->userdata('prenom') == 'Guillaume' && $this->session->userdata('nom') == 'Gailliet'){ ?>
-                                        <li><a href="<?php echo base_url()?>membre/show/cotisation"><i class="fa fa-lock"></i>Cotisation</a></li>
-                                        <?php } ?>                                        
+                                        <?php //if($this->session->userdata('prenom') == 'Guillaume' && $this->session->userdata('nom') == 'Gailliet'){ ?>
+                                        <!-- <li><a href="<?php echo base_url()?>membre/show/cotisation"><i class="fa fa-lock"></i>Cotisation</a></li> -->
+                                        <?php //} ?>                                        
                                     </ul>    
                                 </li>
                                 

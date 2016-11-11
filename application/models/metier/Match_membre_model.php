@@ -46,6 +46,31 @@ class Match_membre_model extends CI_Model{
 		$this->sb = $sb;
 		$this->cs = $cs;
 	}
+
+    public function hydrate($obj){
+        $this->setIdMatchMembre($obj->id_match_membre);
+        $this->setIdMembre($obj->id_membre);
+        $this->setIdMatch($obj->id_match);
+        $this->setPa($obj->pa);
+        $this->setAb($obj->ab);
+        $this->setHit($obj->hit);
+        $this->setSimpleHit($obj->simplehit);
+        $this->setDoubleHit($obj->doublehit);
+        $this->setTripleHit($obj->triplehit);
+        $this->setHr($obj->hr);
+        $this->setRoe($obj->roe);
+        $this->setHbp($obj->hbp);
+        $this->setGofo($obj->gofo);
+        $this->setSac($obj->sac);
+        $this->setBb($obj->bb);
+        $this->setK($obj->k);
+        $this->setRbi($obj->rbi);
+        $this->setRuns($obj->runs);
+        $this->setSb($obj->sb);
+        $this->setCs($obj->cs);
+
+        return $this;
+    }
 	
 	public function calculPA($simple,$double,$triple,$hr,$roe,$hbp,$gofo,$sac,$bb,$k){
     	$pa = $simple+$double+$triple+$hr+$roe+$hbp+$gofo+$sac+$bb+$k;

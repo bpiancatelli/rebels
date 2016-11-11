@@ -11,6 +11,14 @@ class Division_model extends CI_Model{
 		$this->nom = $nom;
 	}
 
+    public function hydrate($obj){
+        
+        $this->setIdDivision($obj->id_division);
+        $this->setNom($obj->nom);
+    
+        return $this;
+    }
+
     /**
      * Gets the value of id.
      *
@@ -30,7 +38,7 @@ class Division_model extends CI_Model{
      */
     public function setIdDivision($id)
     {
-        $this->id = $idDivision;
+        $this->idDivision = $id;
 
         return $this;
     }

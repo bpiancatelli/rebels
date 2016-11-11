@@ -104,7 +104,19 @@
                                         </td>
                                         <td>
                                             <div class="w_center w_50 col-md-offset-2">
-                                                <input type="text" name="date"></input>
+                                                
+                                                <!-- cdn for modernizr, if you haven't included it already -->
+                                                <script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+                                                <!-- polyfiller file to detect and load polyfills -->
+                                                <script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+                                                <script>
+                                                  webshims.setOptions('waitReady', false);
+                                                  webshims.setOptions('forms-ext', {types: 'date'});
+                                                  webshims.polyfill('forms forms-ext');
+                                                </script>
+
+                                                <input type="date" name="date"/>
+                                            
                                             </div>
                                         </td>
                                         <div class="clearfix"></div>
@@ -196,13 +208,13 @@
                                 <?php if($calendrier != null){ ?>
                                     <?php foreach($calendrier as $match) {?>
                                         <?php 
-                                            $equipe = $ea->getAdversaireById($match->getIdAdversaire());
+                                            $equipe = $ea->getAdversaireById($match->getIdAdversaire());                                            
                                             $division = $d->getDivisionByIdDivision($match->getIdDivision());
                                         ?>
                                             <tr>
                                                 <td><?php echo $division->getNom(); ?></td>
                                                 <td><?php echo $equipe->getNomLong(); ?></td>
-                                                <td><?php echo $match->getDateMatch(); ?></td>
+                                                <td><?php echo $ca->sqlToDate($ca->suppressMidnight($match->getDateMatch())); ?></td>
                                                 <td><?php echo $match->getIsDomicile()? 'Home' : 'Away'; ?></td>
                                                 <td><a href="<?php echo base_url()?>statistique/update/<?php echo $match->getIdMatch()?>"><i class="fa fa-pencil"></i></a></td>
                                             </tr>

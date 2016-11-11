@@ -17,6 +17,15 @@ class Cotisation_model extends CI_Model{
 	}
 
 
+    public function hydrate($obj){
+        foreach ($obj as $value) {
+            $this->setIdCoti($value->id_cotisation);
+            $this->setIdMembre($value->id_membre);
+            $this->setCotiPaye($value->cotisation_paye);
+            $this->setCotiTotal($value->cotisation_total);
+        }
+        return $this;
+    }
 
     /**
      * Gets the value of idCoti.

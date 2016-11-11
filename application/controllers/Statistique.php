@@ -110,20 +110,20 @@ class Statistique extends CI_Controller{
 
 	public function setjoueur($idMatch){
 		$idMembre = $this->input->post('joueur');
-		$simpleHit= $this->input->post('simpleHit');
-		$doubleHit= $this->input->post('doubleHit');
-		$tripleHit= $this->input->post('tripleHit');
-		$hr= $this->input->post('hr');
-		$roe= $this->input->post('roe');
-		$hbp= $this->input->post('hbp');
-		$gofo= $this->input->post('gofo');
-		$sac= $this->input->post('sac');
-		$bb= $this->input->post('bb');
-		$k= $this->input->post('k');
-		$rbi= $this->input->post('rbi');
-		$runs= $this->input->post('runs');
-		$sb= $this->input->post('sb');
-		$cs= $this->input->post('cs');
+		$simpleHit= $this->input->post('simpleHit') ? $this->input->post('simpleHit') : 0;
+		$doubleHit= $this->input->post('doubleHit') ? $this->input->post('doubleHit') : 0;
+		$tripleHit= $this->input->post('tripleHit') ? $this->input->post('tripleHit') : 0;
+		$hr= $this->input->post('hr') ? $this->input->post('hr') : 0;
+		$roe= $this->input->post('roe') ? $this->input->post('roe') : 0;
+		$hbp= $this->input->post('hbp') ? $this->input->post('hbp') : 0;
+		$gofo= $this->input->post('gofo') ? $this->input->post('gofo') : 0;
+		$sac= $this->input->post('sac') ? $this->input->post('sac') : 0;
+		$bb= $this->input->post('bb') ? $this->input->post('bb') : 0;
+		$k= $this->input->post('k') ? $this->input->post('k') : 0;
+		$rbi= $this->input->post('rbi') ? $this->input->post('rbi') : 0;
+		$runs= $this->input->post('runs') ? $this->input->post('runs') : 0;
+		$sb= $this->input->post('sb') ? $this->input->post('sb') : 0;
+		$cs= $this->input->post('cs') ? $this->input->post('cs') : 0;
 
 		//LOG
 		// $fl = new Form_log_adapter();
