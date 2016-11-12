@@ -9,6 +9,7 @@ class Membre extends CI_Controller{
 		$this->load->model('dao/cotisation_adapter');	
 		$this->load->model('dao/division_adapter');
 		$this->load->model('dao/drivertool_adapter');		
+		$this->load->model('dao/error_handler_adapter');
 		$this->load->model('dao/equipe_adapter');
 		$this->load->model('dao/form_log_adapter');
 		$this->load->model('dao/membre_adapter');
@@ -22,99 +23,14 @@ class Membre extends CI_Controller{
 		
 	}
 
-	public function synchroCalendrier($division){
-		$cm = new Curl_model();
-		$ma = new Match_adapter();
-
-		$deux='';
-		if ($division == '4BB') {
-			$deux='+2';
-		}
-
-        $page = utf8_encode($cm->post_data(FRBBS_CALENDRIER,'division='.$division.'&pdf=true&team=Li%E8ge+Rebel+Foxes'.$deux));
-		$html = str_get_html($page);
-
-		$table = $html->find('table', 1);
-		$rowData = array();
-		foreach($table->find('tr') as $row) {
-		    // initialize array to store the cell data from each row
-		    $flight = array();
-		    foreach($row->find('td') as $cell) {
-		        // push the cell's text to the array
-		        $flight[] = $cell->plaintext;
-		    }
-		    $rowData[] = $flight;
-		}		
-
-
-		foreach ($rowData as $value) {			
-			foreach ($value as $k => $v) {
-				$check = $ma->compareCurlVsDb($value);
-			}
-		}
-		
-		
-	}
 
 	public function index(){
 
 		$m = new Match_adapter();
 		$mma = new Match_membre_adapter();
-        $cm = new Curl_model();
-        $year = date('Y',now());
-        $page = utf8_encode($cm->grab_page(FRBBS_CLASSEMENT.$year));
-        $sa = new Sidebar_adapter();
        	
-/*
-|--------------------------------------------------------------------------
-| Generate calendar
-|--------------------------------------------------------------------------
-|
-*/
         $data['adversaires'] = $m->getMatchsOfNextWeek();
-
-/*
-|--------------------------------------------------------------------------
-| Generate championship
-|--------------------------------------------------------------------------
-|
-*/
-		$html = str_get_html($page);		
-		$i = 0;
-		$championships = array();
-		$headerName = array('Club','G','W','L','T','NP','FF','AVG','Pts');
-		while ($i < sizeof($html->find('table[width="375"]'))) {						
-			$table = $html->find('table[width="375"]', $i);			
-			$rowData = array();
-			$rowHeader = array();			
-			foreach($table->find('tr') as $row) {
-			    // initialize array to store the cell data from each row
-			    $flight = array();		
-			    $header = strip_tags($row->find('th',0));
-			    $j=0;
-			    foreach($row->find('td') as $cell) {
-			        // push the cell's text to the array
-			        //echo $cell->plaintext."<br>";
-			  		$flight[$headerName[$j]] = $cell->plaintext;
-			        $j++;
-			    }
-			    $rowHeader[] = $header;
-			    $rowData[] = $flight;
-			    $championships[$rowHeader[0]] = $rowData;
-			} 
-			$i++;
-		}
-		$club = array();
-		foreach ($championships as $key => $value) {
-			foreach ($value as $k => $v) {
-				foreach ($v as $a => $z) {
-					if(strpos($z, 'Liege Rebel Foxes') !== false){
-						$club[$key] = $value;
-					}
-				}
-			}
-		}
-		$data['championships'] = $club;  
+		$data['championships'] = $this->fetchChampionship();  
 
 /*
 |--------------------------------------------------------------------------
@@ -161,13 +77,15 @@ class Membre extends CI_Controller{
 			);
 
 		
-		$this->load->view('tags/header');		
+		$this->load->view('tags/header');
+        $sa = new Sidebar_adapter();
 		$sa->generateSideBar();
 		$this->load->view('tags/membre/home/homepage',$data);
 		$this->load->view('tags/footer');
 	}
 
 	public function annonce(){
+
 		$this->load->view('tags/header');
 		$sa = new Sidebar_adapter();
 		$sa->generateSideBar();
@@ -272,21 +190,21 @@ class Membre extends CI_Controller{
 		if(($new == $confirm) && ($new != $old) && ($old == $this->session->userdata('password'))){
 
 			$ma = new Membre_adapter();
-			$ma->updatePassword($id_membre,$new);
+			$db = $ma->updatePassword($id_membre,$new);
 
-			$m = new Membre_model($this->session->userdata('idMembre'), 
-				$this->session->userdata('nom'), 
-				$this->session->userdata('prenom'), 
-				$this->session->userdata('email'), 
-				$this->session->userdata('login'),
-				$new, 
-				$this->session->userdata('dateInscription'), 
-				$this->session->userdata('derniereConnexion'), 
-				$this->session->userdata('actif'), 
-				$this->session->userdata('administrateur')
-				);
+			if (isset($db["code"]) && $db["message"] != null) {
+				$data['mdp']['succes'] = false;
+				$eha = new Error_handler_adapter();
+				$erreur = $eha->getMessageById($db["code"]);					
+				$data['mdp']['message'] = $erreur->getMessage();
 
-			
+				
+			}else{
+				$data['mdp']['succes'] = true;
+				$data['mdp']['message'] = "Mot de passe enregistré";
+				$this->session->set_userdata('password', $new);
+			}		
+						
 			//LOG
 			//$fl = new Form_log_adapter();
 			//$membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
@@ -295,16 +213,16 @@ class Membre extends CI_Controller{
 			//$idMembre = $this->session->userdata('idMembre');		
 			//$fl->insertLog(6,21,$parametres,$membre,$idMembre);
 			
-			$data['succes']['mdp'] = "Modification effectuées avec succès";		
 			$this->update($data);			
 			
 
 		}else{
+			$data['mdp']['succes'] = false;
 			if($old != $this->session->userdata('password')){
-				$data['erreur']['mdp'] = 'l\'ancien mot de passe n\'est pas correct';					
+				$data['mdp']['message'] = 'l\'ancien mot de passe n\'est pas correct';					
 			}else{
 				if($new != $confirm){
-					$data['erreur']['mdp'] = 'nouveau mot de passe et confirmation sont différents';						
+					$data['mdp']['message'] = 'nouveau mot de passe et confirmation sont différents';						
 				}
 			}
 			
@@ -324,20 +242,19 @@ class Membre extends CI_Controller{
 		if(filter_var($email, FILTER_VALIDATE_EMAIL) && ($email != $this->session->userdata('email'))){			
 
 			$ma = new Membre_adapter();
-			$ma->updateEmail($id_membre,$email);
+			$db = $ma->updateEmail($id_membre,$email);			
 
-			$m = new Membre_model($this->session->userdata('idMembre'), 
-				$this->session->userdata('nom'), 
-				$this->session->userdata('prenom'), 
-				$email, 
-				$this->session->userdata('login'),
-				$this->session->userdata('password'),
-				$this->session->userdata('dateInscription'), 
-				$this->session->userdata('derniereConnexion'), 
-				$this->session->userdata('actif'), 
-				$this->session->userdata('administrateur')
-			);
-
+			if (isset($db["code"]) && $db["message"] != null) {
+				$data['email']['succes'] = false;
+				$eha = new Error_handler_adapter();
+				$erreur = $eha->getMessageById($db["code"]);					
+				$data['email']['message'] = $erreur->getMessage();
+				
+			}else{
+				$data['email']['succes'] = true;
+				$data['email']['message'] = "email enregistré";
+				$this->session->set_userdata('email', $email);
+			}	
 			//LOG
 			// $fl = new Form_log_adapter();
 			// $membre = $this->session->userdata('prenom')." ".$this->session->userdata('nom');		
@@ -346,14 +263,14 @@ class Membre extends CI_Controller{
 			// $idMembre = $this->session->userdata('idMembre');
 			//$fl->insertLog(6,22,$parametres,$membre,$idMembre);
 
-			$data['succes']['email'] = "Modification effectuées avec succès";
 			$this->update($data);
 			
-		}else{			
+		}else{		
+			$data['email']['succes'] = false;	
 			if($email == $this->session->userdata('email')){
-				$data['erreur']['email'] = 'la même adresse email est déjà encodée';
+				$data['email']['message'] = 'la même adresse email est déjà encodée';
 			}else{
-				$data['erreur']['email'] = 'format d\'email incorrect';	
+				$data['email']['message'] = 'format d\'email incorrect';	
 			}
 			
 			$this->update($data);
@@ -404,7 +321,7 @@ class Membre extends CI_Controller{
 
 			case 'drivertool':
 				$d = new Drivertool_adapter();
-				$data['driverLog'] = $d->getAllDriverTool();				
+				$data['driverLog'] = $d->getAllDriverTool();
 
 				break;
 
@@ -433,7 +350,8 @@ class Membre extends CI_Controller{
 				$ma = new Match_adapter();
 				$ca = new Calendrier_adapter();
 				//$date = $ca->dateToSql($date);
-				$ma->addCalendar($division,$adversaire,$date,$reference,$localisation);
+				
+				$db = $ma->addCalendar($division,$adversaire,$date,$reference,$localisation);
 
 				//LOG
 				// $fl = new Form_log_adapter();
@@ -443,7 +361,19 @@ class Membre extends CI_Controller{
 				// $idMembre = $this->session->userdata('idMembre');		
 				//$fl->insertLog(5,11,$parametres,$membre,$idMembre);
 
-				$data['succes']['calendrier'] = "Match ajouté avec succès";		
+				if (isset($db["code"]) && $db["message"] != null) {
+					$data['info']['succes'] = false;
+					$eha = new Error_handler_adapter();
+					$erreur = $eha->getMessageById($db["code"]);					
+					$data['info']['message'] = $erreur->getMessage();
+
+					
+				}else{
+					$data['info']['succes'] = true;
+					$data['info']['message'] = "Match ajouté avec succès";
+				}
+
+
 				$this->show('calendrier',$data);
 				
 				break;
@@ -519,6 +449,90 @@ class Membre extends CI_Controller{
 		
 	}
 
+	public function synchroCalendrier($division){
+		$cm = new Curl_model();
+		$ma = new Match_adapter();
+
+		$deux='';
+		if ($division == '4BB') {
+			$deux='+2';
+		}
+
+        $page = utf8_encode($cm->post_data(FRBBS_CALENDRIER,'division='.$division.'&pdf=true&team=Li%E8ge+Rebel+Foxes'.$deux));
+		$html = str_get_html($page);
+
+		$table = $html->find('table', 1);
+		$rowData = array();
+		foreach($table->find('tr') as $row) {
+		    // initialize array to store the cell data from each row
+		    $flight = array();
+		    foreach($row->find('td') as $cell) {
+		        // push the cell's text to the array
+		        $flight[] = $cell->plaintext;
+		    }
+		    $rowData[] = $flight;
+		}		
+
+
+		foreach ($rowData as $value) {			
+			foreach ($value as $k => $v) {
+				$check = $ma->compareCurlVsDb($value);
+			}
+		}
+		
+		
+	}
+
+	public function fetchChampionship(){
+
+		/*
+		|--------------------------------------------------------------------------
+		| Generate championship
+		|--------------------------------------------------------------------------
+		|
+		*/
+        $year = date('Y',now());
+        $cm = new Curl_model();
+        $page = utf8_encode($cm->grab_page(FRBBS_CLASSEMENT.$year));
+
+		$html = str_get_html($page);		
+		$i = 0;
+		$championships = array();
+		$headerName = array('Club','G','W','L','T','NP','FF','AVG','Pts');
+		while ($i < sizeof($html->find('table[width="375"]'))) {						
+			$table = $html->find('table[width="375"]', $i);			
+			$rowData = array();
+			$rowHeader = array();			
+			foreach($table->find('tr') as $row) {
+			    // initialize array to store the cell data from each row
+			    $flight = array();		
+			    $header = strip_tags($row->find('th',0));
+			    $j=0;
+			    foreach($row->find('td') as $cell) {
+			        // push the cell's text to the array
+			        //echo $cell->plaintext."<br>";
+			  		$flight[$headerName[$j]] = $cell->plaintext;
+			        $j++;
+			    }
+			    $rowHeader[] = $header;
+			    $rowData[] = $flight;
+			    $championships[$rowHeader[0]] = $rowData;
+			} 
+			$i++;
+		}
+		$club = array();
+		foreach ($championships as $key => $value) {
+			foreach ($value as $k => $v) {
+				foreach ($v as $a => $z) {
+					if(strpos($z, 'Liege Rebel Foxes') !== false){
+						$club[$key] = $value;
+					}
+				}
+			}
+		}
+
+		return $club;
+	}
 	
 
 

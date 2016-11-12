@@ -32,11 +32,11 @@
                     
                             <h3>General</h3>       
                             <ul class="nav side-menu">
-                                <li><a href="<?php echo base_url()?>membre/index"><i class="fa fa-home"></i> Home</a></li>
+                                <li><a href="<?php echo base_url()?>membre/index"><i class="fa fa-home"></i>Home</a></li>
                                 <li><a href="<?php echo base_url()?>membre/annonce"><i class="fa fa-bullhorn"></i>Annonces</a></li>
                                 <li><a href="<?php echo base_url()?>exercice/index"><i class="fa fa-check"></i>Exercices</a></li>
 
-                                <!--<li><a><i class="fa fa-bar-chart-o"></i> Statistiques <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-bar-chart-o"></i> Statistiques <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="<?php echo base_url()?>statistique/division">Toutes les divisions</a>
                                         </li>
@@ -51,7 +51,7 @@
                                         <?php }?>
                                             
                                     </ul>
-                                </li>-->
+                                </li>
                                 <li><a href="<?php echo base_url()?>drivertool/show"><i class="fa fa-taxi"></i>Driver Tool</a></li>
                                 
                                 <!--<li><a href="<?php echo base_url()?>forum/show/dossier"><i class="fa fa-folder-open"></i>Forum</a></li>!-->
@@ -84,7 +84,7 @@
                                     
                                 <?php } ?>
 
-                                 <li><a><i class="fa fa-user"></i> Mon compte <span class="fa fa-chevron-down"></span></a>
+                                 <li><a><i class="fa fa-user"></i>Mon compte <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="<?php echo base_url()?>membre/update/0"><i class="fa fa-info"></i>Modifier mes données</a></li>
                                         <li><a href="<?php echo base_url()?>membre/logout"><i class="fa fa-sign-out"></i>Se déconnecter</a></li>

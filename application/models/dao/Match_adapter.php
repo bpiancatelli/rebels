@@ -186,17 +186,17 @@ class Match_adapter extends CI_Model{
 
 	}
 
-	public function addCalendar($division,$adversaire,$date,$reference,$domicile){
-		try {
-			$this->db->insert('match',array('id_division'=>$division,
+	public function addCalendar($division,$adversaire,$date,$reference,$domicile){		
+			$result = $this->db->insert('match',array('id_division'=>$division,
 													'id_adversaire'=>$adversaire,
 													'date_match'=>$date,
 													'reference'=>$reference,
 													'is_domicile'=>$domicile)
 			);
-		} catch (Exception $e) {
-			echo $e->getMessage();
-		}
+			
+			if (!$result) {				
+				return $this->db->error();
+			}		
 	}
 
 	public function updateScore($idMatch,$scoreHome,$scoreAway){

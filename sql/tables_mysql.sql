@@ -121,3 +121,13 @@ values
 ('Frontliners Poperige','Frontliners'),
 ('Seraing Brown Boys','Brown Boys'),
 ('Tournai Celtics','Celtics');
+
+
+CREATE TABLE `baseball`.`error_handler` (
+  `id_error_handler` INT NOT NULL AUTO_INCREMENT,
+  `code` INT NOT NULL,
+  `message` VARCHAR(250) NULL,
+  PRIMARY KEY (`id_error_handler`),
+  UNIQUE INDEX `nom_UNIQUE` (`code`, `message` ASC));
+
+  insert into error_handler(code, message) values (1048,'Valeur ne peut être null'),(1062,'Valeur dupliquée'),(1292,'Incorrect valeur entrée');

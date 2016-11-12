@@ -2,7 +2,6 @@
 
     $gentelella = base_url()."../plugins/gentelella/production/";
     $datatables = base_url()."../plugins/datatables/";
-
 ?>
 
 
@@ -40,35 +39,26 @@
                     <table>
                         <tbody>
                             <div class="x_content">  
-                                <?php if(isset($erreur['calendrier']) && $erreur['calendrier'] !=null) { ?>
-                                    <div class="alertmessage alert alert-danger">                                                                                        
-                                        <?php echo $erreur['calendrier']; ?>                                                                                              
-                                    </div>
-                                <?php }?>
-                                <?php if(isset($succes['calendrier']) && $succes['calendrier'] !=null) { ?>
-                                <div class="alertmessage alert alert-success">                                                                                        
-                                    <?php echo $succes['calendrier']; ?>                                                                                              
-                                </div>
-                                <?php }?>
+
                                 <tr>
                                     
-                                        <td>
-                                            <div class="w_left w_30">
-                                                <span>Division</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="w_center w_50 col-md-offset-2" >
-                                                <select class="form-control" name="division">
-                                                    <?php foreach($divisions as $division){?>
-                                                    <option value="<?php echo $division->getIdDivision()?>">
-                                                        <?php echo $division->getNom();?>
-                                                    </option>
-                                                <?php } ?>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <div class="clearfix"></div>
+                                    <td>
+                                        <div class="w_left w_30">
+                                            <span>Division</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="w_center w_50 col-md-offset-2" >
+                                            <select class="form-control" name="division">
+                                                <?php foreach($divisions as $division){?>
+                                                <option value="<?php echo $division->getIdDivision()?>">
+                                                    <?php echo $division->getNom();?>
+                                                </option>
+                                            <?php } ?>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <div class="clearfix"></div>
                                     
                                 </tr>
 
@@ -169,11 +159,27 @@
                                         <div class="clearfix"></div>
                                     
 
-                                </tr>                                         
+                                </tr>
                             </div>
                         </tbody>
                     </table>
                 </form>
+                <div class="col-md-12">
+                    <tr>
+                        <td>
+
+                            <?php if (isset($info) && $info != null) { 
+
+                                $alert = $info['succes'] ? "alert-success" : "alert-danger";
+                            ?>
+                                <div class="alertmessage alert <?php echo $alert ?>">
+                                    <?php echo $info["message"]; ?>
+                                </div>
+                                
+                            <?php } ?>
+                        </td>                                    
+                    </tr>
+                </div>
             </div>            
         </div>
 
@@ -252,7 +258,7 @@
 
 <script>setTimeout(function() {
     $('.alertmessage').fadeOut('slow');
-}, 2000); // <-- time in milliseconds
+}, 10000); // 
 </script>     
 
 <div id="custom_notifications" class="custom-notifications dsp_none">

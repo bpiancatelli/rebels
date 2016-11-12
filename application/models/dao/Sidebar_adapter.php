@@ -16,7 +16,7 @@ class Sidebar_adapter extends CI_Model{
               );
 		$this->session->set_userdata($newdata);
 
-		$this->load->view('tags/membre/home/sidebar');//,$data);
+		$this->load->view('tags/sidebar',$data);//,$data);
 	}
 
 }

@@ -40,16 +40,7 @@
                         <table>
                             <tbody>
                                 <div class="x_content">  
-                                    <?php if(isset($erreur['mdp']) && $erreur['mdp'] !=null) { ?>
-                                        <div class="alertmessage alert alert-danger">                                                                                        
-                                            <?php echo $erreur['mdp']; ?>                                                                                              
-                                        </div>
-                                    <?php }?>
-                                    <?php if(isset($succes['mdp']) && $succes['mdp'] !=null) { ?>
-                                    <div class="alertmessage alert alert-success">                                                                                        
-                                        <?php echo $succes['mdp']; ?>                                                                                              
-                                    </div>
-                                    <?php }?>
+
                                     <tr>
                                         
                                             <td>
@@ -112,6 +103,22 @@
                             </tbody>
                         </table>
                     </form>
+                    <div class="col-md-12">
+                        <tr>
+                            <td>
+
+                                <?php if (isset($mdp) && $mdp != null) { 
+
+                                    $alert = $mdp['succes'] ? "alert-success" : "alert-danger";
+                                ?>
+                                    <div class="alertmessage alert <?php echo $alert ?>">
+                                        <?php echo $mdp["message"]; ?>
+                                    </div>
+                                    
+                                <?php } ?>
+                            </td>                                    
+                        </tr>
+                    </div>
                 </div>            
             </div>
 
@@ -136,17 +143,7 @@
                 ?>
                     <form>
                         <table>
-                                <tbody>
-                                <?php if(isset($erreur['email']) && $erreur['email'] !=null) { ?>
-                                    <div class="alertmessage alert alert-danger">                                                                                        
-                                        <?php echo $erreur['email']; ?>                                                                                              
-                                    </div>
-                                <?php }?>
-                                <?php if(isset($succes['email']) && $succes['email'] !=null) { ?>
-                                    <div class="alertmessage alert alert-success">                                                                                        
-                                        <?php echo $succes['email']; ?>                                                                                              
-                                    </div>
-                                <?php }?>
+                            <tbody>
                                 <div class="x_content">                        
                                     <tr>
                                         
@@ -175,7 +172,23 @@
                                 </div>
                             </tbody>
                         </table>
-                    </form>                  
+                    </form>
+                    <div class="col-md-12">
+                        <tr>
+                            <td>
+
+                                <?php if (isset($email) && $email != null) { 
+
+                                    $alert = $email['succes'] ? "alert-success" : "alert-danger";
+                                ?>
+                                    <div class="alertmessage alert <?php echo $alert ?>">
+                                        <?php echo $email["message"]; ?>
+                                    </div>
+                                    
+                                <?php } ?>
+                            </td>                                    
+                        </tr>
+                    </div>
                 </div>
             </div>                
         </div>
@@ -195,7 +208,7 @@
 
 <script>setTimeout(function() {
     $('.alertmessage').fadeOut('slow');
-}, 2000); // <-- time in milliseconds
+}, 10000); // <-- time in milliseconds
 </script>     
 
 

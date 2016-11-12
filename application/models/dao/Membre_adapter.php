@@ -102,12 +102,17 @@ class Membre_adapter extends CI_Model{
             );
 
 		$this->db->where('id_membre', $id_membre);
-		$this->db->update('membre', $data); 
+		$result = $this->db->update('membre', $data);					
+			
+		if (!$result) {				
+			return $this->db->error();
+		}	
+
 	}
 
 	public function updateDerniereConnexion($idMembre){
 		$this->load->helper('date');
-		$today = date('Y-m-d',now());
+		$today = date('Y-m-d h:i:s',now());
 
 		$data = array(
                'derniere_connexion' => $today
