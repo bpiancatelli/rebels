@@ -16,8 +16,8 @@ class Admin extends CI_Controller{
 		$ma = new Membre_adapter();
 
         $cm = new Curl_model();
-        $page = utf8_encode($cm->post_data(FRBBS_LICENCE,'club=Li%E8ge_Rebel_Foxes&pdf=true&tri=Nom'));        
-//die(var_dump($page));
+        $page = utf8_encode($cm->post_data(FRBBS_LICENCE,'club=Liege_Rebels&pdf=true&tri=Nom'));        
+
         $html = str_get_html($page);
         $table = $html->find('table', 1);
         $rowData = array();

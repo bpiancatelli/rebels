@@ -119,7 +119,7 @@
          <div class="col-md-8 col-sm-8 col-xs-12">  
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Liste calendrier</h2>
+                    <h2>Liste membre</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>                           
@@ -196,7 +196,7 @@
 
 
 <script type="text/javascript" src="<?php echo $datatables ?>datatables.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>        
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
 
 <script src="<?php echo $gentelella?>js/bootstrap.min.js"></script>
